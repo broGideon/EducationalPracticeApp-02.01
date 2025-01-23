@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace EducationalPracticeApp.Views;
 
-public partial class Header : UserControl
+public partial class AutoparkPage : Page
 {
-    public Header()
+    public AutoparkPage()
     {
         InitializeComponent();
     }
