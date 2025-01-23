@@ -1,37 +1,36 @@
 using System.Collections.ObjectModel;
+using EducationalPracticeApp.Helper;
 using EducationalPracticeApp.Models;
 
 namespace EducationalPracticeApp.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-    [ObservableProperty] private string _message;
-    [ObservableProperty] private ObservableCollection<Transport> _transports = new ObservableCollection<Transport>();
+    [ObservableProperty] private ObservableCollection<Transport> _transports = new();
+    [ObservableProperty] private ObservableCollection<Order> _order = new();
+    private readonly ApiHelper _apiHelper; 
 
     public MainViewModel()
     {
-        Message = "Hello";
-        for (int i = 0; i < 30; i++)
-        {
-            var transport = new Transport();
-            transport.IdTransport = i;
-            transport.Maker = "asd";
-            transport.Model = "asd";
-            transport.MaxPayload = 5;
-            transport.StNumber = "asd";
-            transport.StatusId = i;
-            var status = new Status();
-            status.IdStatus = i;
-            status.StatusName = "asd";
-            transport.Status = status;
-            _transports.Add(transport);
-        }
+        _apiHelper = new ApiHelper();
+        _ = InitializeDataAsync();
     }
-
-    [RelayCommand(AllowConcurrentExecutions = true)]
-    private async Task UpdateMessageAsync()
+    
+    private async Task InitializeDataAsync()
     {
-        await Task.Delay(2000);
-        Message = "Сообщение обновлено!";
+        await LoadTransports();
+        await LoadOrders();
+    }
+    
+    private async Task LoadTransports()
+    {
+        List<Transport>? transports = await _apiHelper.Get<List<Transport>>("transport");
+        Transports = new ObservableCollection<Transport>(transports ?? new List<Transport>());
+    }
+    
+    private async Task LoadOrders()
+    {
+        List<Order>? order = await _apiHelper.Get<List<Order>>("order");
+        Order = new ObservableCollection<Order>(order ?? new List<Order>());
     }
 }
