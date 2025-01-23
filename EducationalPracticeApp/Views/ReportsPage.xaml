@@ -7,7 +7,137 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EducationalPracticeApp.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition MaxWidth="400" Width="1.2*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0">
+                <TextBlock
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Margin="0,0,0,10"
+                    Text="Водители"
+                    VerticalAlignment="Center" />
+            </Grid>
+            <DataGrid
+                AutoGenerateColumns="False"
+                BorderBrush="#C7C7C7"
+                BorderThickness="1"
+                Grid.Row="1"
+                GridLinesVisibility="All"
+                HeadersVisibility="Column"
+                IsReadOnly="True"
+                Margin="0,10,0,0"
+                RowBackground="White"
+                VerticalScrollBarVisibility="Auto">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Setter Property="Background" Value="#CECECE" />
+                        <Setter Property="Padding" Value="5,10" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding EmployeeId}"
+                        Header="Сотрудник"
+                        Width="*" />
+                    <DataGridTextColumn
+                        Binding="{Binding ReportType}"
+                        Header="Тип отчета"
+                        Width="*" />
+                    <DataGridTextColumn
+                        Binding="{Binding ReportDate}"
+                        Header="Дата создания"
+                        Width="*" />
+                    <DataGridTextColumn
+                        Binding="{Binding ReportContent}"
+                        Header="Содержание"
+                        Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Border
+            Background="#C4C4C4"
+            CornerRadius="15"
+            Grid.Column="1"
+            Height="300"
+            Margin="20,40,0,0"
+            Padding="20,15">
+            <StackPanel>
+
+                <Border
+                    Background="#909190"
+                    CornerRadius="15"
+                    Margin="0,5"
+                    Padding="0,15">
+                    <StackPanel>
+                        <TextBlock
+                            FontFamily="Inter"
+                            FontSize="16"
+                            FontWeight="Normal"
+                            Text="Выбранныей отчёт:"
+                            TextAlignment="Center" />
+                        <TextBlock
+                            FontFamily="Inter"
+                            FontSize="16"
+                            FontWeight="Normal"
+                            Text=" {тип отчета}, от {дата генерации}"
+                            TextAlignment="Center" />
+                    </StackPanel>
+                </Border>
+                <Button
+                    Background="#5AC365"
+                    Content="Распечатать выбранный отчет"
+                    FontFamily="Inter"
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Margin="0,10"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                <Button
+                    Background="#5AC365"
+                    Content="Открыть выбранный отчет"
+                    FontFamily="Inter"
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Margin="0,10"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                <Button
+                    Background="#5AC365"
+                    Content="Сгенерировать новый отчет"
+                    FontFamily="Inter"
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Margin="0,10"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                <Button
+                    Background="#C35A5A"
+                    Content="Удалить выбранный отчет"
+                    FontFamily="Inter"
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Margin="0,10"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+            </StackPanel>
+        </Border>
+    </Grid>
 </Page>

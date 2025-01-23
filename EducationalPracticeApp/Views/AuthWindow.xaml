@@ -46,31 +46,31 @@
                     Grid.Row="0"
                     Text="Вход"
                     TextAlignment="Center" />
-                <TextBox
-                    AcceptsReturn="True"
+                <Border
                     Background="#DBDADA"
-                    BorderBrush="Transparent"
-                    FontFamily="Inter"
-                    FontSize="20"
+                    CornerRadius="15"
                     Grid.Row="1"
                     Margin="17,20"
-                    Padding="15,11"
-                    Style="{StaticResource MaterialDesignFilledTextBox}"
-                    VerticalAlignment="Top"
-                    materialDesign:HintAssist.Hint="Логин"
-                    materialDesign:TextFieldAssist.HasClearButton="True" />
-                <PasswordBox
+                    Padding="15,10">
+                    <TextBox
+                        FontFamily="Inter"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Логин"
+                        materialDesign:TextFieldAssist.HasClearButton="True" />
+                </Border>
+                <Border
                     Background="#DBDADA"
-                    BorderBrush="Transparent"
-                    FontFamily="Inter"
-                    FontSize="20"
+                    CornerRadius="15"
                     Grid.Row="2"
                     Margin="17,0"
-                    Padding="15,11"
-                    Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
-                    VerticalContentAlignment="Bottom"
-                    materialDesign:HintAssist.Hint="Пароль"
-                    materialDesign:TextFieldAssist.HasClearButton="True" />
+                    Padding="15,10">
+                    <PasswordBox
+                        FontFamily="Inter"
+                        FontSize="16"
+                        Style="{StaticResource MaterialDesignRevealPasswordBox}"
+                        materialDesign:HintAssist.Hint="Пароль"
+                        materialDesign:TextFieldAssist.HasClearButton="True" />
+                </Border>
                 <Button
                     Background="#DBDADA"
                     BorderBrush="Transparent"
