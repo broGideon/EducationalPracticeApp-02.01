@@ -18,7 +18,7 @@ public class Voyage
 
     public string ArrivalPoint { get; set; } = null!;
 
-    public int Status { get; set; }
+    public string Status { get; set; }
 
     public virtual Driver? Driver { get; set; }
 

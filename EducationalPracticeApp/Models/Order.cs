@@ -16,7 +16,7 @@ public class Order
 
     public DateOnly? ArriveDate { get; set; }
 
-    public int Status { get; set; }
+    public string Status { get; set; }
 
     public virtual Client? Client { get; set; }
 }
