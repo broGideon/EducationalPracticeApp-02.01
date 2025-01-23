@@ -4,15 +4,77 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EducationalPracticeApp.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Вход"
+        WindowStartupLocation="CenterScreen"
+        Height="800"
+        Width="1000">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Message}"/>
-            <Button Content="Обновить" Command="{Binding UpdateMessageCommand}"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" Grid.Column="1" CornerRadius="15" Background="#C4C4C4" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" FontSize="20" FontFamily="Inter" TextAlignment="Center" Text="Вход" />
+                <TextBox
+                    Grid.Row="1"
+                    FontFamily="Inter"
+                    FontSize="20"
+                    BorderBrush="Transparent"
+                    Background="#DBDADA"
+                    Margin="17, 20"
+                    Padding="15, 11"
+                    VerticalAlignment="Top"
+                    materialDesign:HintAssist.Hint="Логин"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MaterialDesignFilledTextBox}"
+                />
+                <PasswordBox
+                    Grid.Row="2"
+                    FontFamily="Inter"
+                    FontSize="20"
+                    BorderBrush="Transparent"
+                    Background="#DBDADA"
+                    Margin="17, 0"
+                    Padding="15, 11"
+                    VerticalContentAlignment="Bottom"
+                    materialDesign:HintAssist.Hint="Пароль"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}"
+                />
+                <Button
+                    Grid.Row="4"
+                    Content="Войти"
+                    Width="123"
+                    Background="#DBDADA"
+                    Foreground="Black"
+                    BorderBrush="Transparent"
+                    FontFamily="Inter"
+                    Height="50"
+                    FontSize="20"
+                    FontWeight="Normal"
+                />
+            </Grid>
+        </Border>
     </Grid>
 </Window>

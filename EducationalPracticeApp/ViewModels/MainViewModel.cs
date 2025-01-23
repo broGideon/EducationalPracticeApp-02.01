@@ -1,16 +1,15 @@
 namespace EducationalPracticeApp.ViewModels;
 
-public partial class MainViewModel: ObservableObject
+public partial class MainViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private string message;
+    [ObservableProperty] private string _message;
 
     public MainViewModel()
     {
         Message = "Hello";
     }
 
-    [RelayCommand]
+    [RelayCommand(AllowConcurrentExecutions = true)]
     private async Task UpdateMessageAsync()
     {
         await Task.Delay(2000);
