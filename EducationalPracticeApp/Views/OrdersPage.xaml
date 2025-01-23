@@ -44,10 +44,22 @@
                         CornerRadius="10"
                         Margin="0,0,14,0"
                         Padding="8,5">
-                        <ComboBox Width="115" materialDesign:HintAssist.Hint="Клиент">
-                            <ComboBoxItem Content="Все" />
-                            <ComboBoxItem Content="Активные" />
-                            <ComboBoxItem Content="Неактивные" />
+                        <ComboBox
+                            ItemsSource="{Binding Clients}"
+                            Width="115"
+                            materialDesign:HintAssist.Hint="Клиент">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat=" {0} {1}">
+                                                <Binding Path="FullName" />
+                                                <Binding Path="Phone" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
                         </ComboBox>
                     </Border>
                     <Border

@@ -43,6 +43,7 @@
             GridLinesVisibility="All"
             HeadersVisibility="Column"
             IsReadOnly="True"
+            ItemsSource="{Binding Orders}"
             RowBackground="White"
             VerticalScrollBarVisibility="Auto">
             <DataGrid.Resources>

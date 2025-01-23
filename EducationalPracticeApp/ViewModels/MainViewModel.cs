@@ -7,7 +7,7 @@ namespace EducationalPracticeApp.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty] private ObservableCollection<Transport> _transports = new();
-    [ObservableProperty] private ObservableCollection<Order> _order = new();
+    [ObservableProperty] private ObservableCollection<Order> _orders = new();
     private readonly ApiHelper _apiHelper; 
 
     public MainViewModel()
@@ -31,6 +31,6 @@ public partial class MainViewModel : ObservableObject
     private async Task LoadOrders()
     {
         List<Order>? order = await _apiHelper.Get<List<Order>>("order");
-        Order = new ObservableCollection<Order>(order ?? new List<Order>());
+        Orders = new ObservableCollection<Order>(order ?? new List<Order>());
     }
 }

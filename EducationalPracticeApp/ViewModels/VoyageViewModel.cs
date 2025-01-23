@@ -5,7 +5,12 @@ namespace EducationalPracticeApp.ViewModels;
 
 public partial class VoyageViewModel: ObservableObject
 {
-    [ObservableProperty] private ObservableCollection<Voyage> _voyage = new();
+    [ObservableProperty] private ObservableCollection<Voyage> _voyages = new();
+    [ObservableProperty] private ObservableCollection<Client> _clients = new();
+    [ObservableProperty] private Client _selectedClient = new();
+    [ObservableProperty] private Voyage _selectedVoyage = new();
+    [ObservableProperty] private StatusWork _selectedStatusWork;
+    public Array StatusWorks { get; } = Enum.GetValues(typeof(StatusWork));
     public VoyageViewModel()
     {
         for (int i = 0; i < 20; i++)
@@ -26,7 +31,7 @@ public partial class VoyageViewModel: ObservableObject
             driver.Name = "Дмитрий";
             driver.MiddleName = "Сергеевич";
             voyage.Driver = driver;
-            _voyage.Add(voyage);
+            _voyages.Add(voyage);
         }
     }
 }
