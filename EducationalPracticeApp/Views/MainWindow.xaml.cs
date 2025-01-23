@@ -17,31 +17,31 @@ public partial class MainWindow : Window
 
     private void AutoparkClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        MainFraim.Content = new AutoparkPage();
     }
 
     private void DriversClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        MainFraim.Content = new DriversPage();
     }
 
     private void OrdersClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        MainFraim.Content = new OrdersPage();
     }
 
     private void VoyageClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        MainFraim.Content = new VoyagePage();
     }
 
     private void ReportsClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        MainFraim.Content = new ReportsPage();
     }
 
     private void ClientsClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        MainFraim.Content = new ClientsPage();
     }
 }
