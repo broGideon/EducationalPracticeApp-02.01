@@ -1,13 +1,182 @@
 <Page
-    Height="450"
+    Height="auto"
+    HorizontalAlignment="Stretch"
     Title="DriversPage"
-    Width="800"
+    VerticalAlignment="Stretch"
+    Width="auto"
     mc:Ignorable="d"
     x:Class="EducationalPracticeApp.Views.DriversPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EducationalPracticeApp.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition MaxWidth="400" Width="1.2*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Row="0">
+                <TextBlock
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Margin="0,0,0,10"
+                    Text="Водители"
+                    VerticalAlignment="Center" />
+            </Grid>
+            <DataGrid
+                AutoGenerateColumns="False"
+                BorderBrush="#C7C7C7"
+                BorderThickness="1"
+                Grid.Row="1"
+                GridLinesVisibility="All"
+                HeadersVisibility="Column"
+                IsReadOnly="True"
+                Margin="0,10,0,0"
+                RowBackground="White"
+                VerticalScrollBarVisibility="Auto">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Setter Property="Background" Value="#CECECE" />
+                        <Setter Property="Padding" Value="5,10" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Surname}"
+                        Header="Фамилия"
+                        Width="*" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="Имя"
+                        Width="*" />
+                    <DataGridTextColumn
+                        Binding="{Binding MiddleName}"
+                        Header="Отчество"
+                        Width="*" />
+                    <DataGridTextColumn
+                        Binding="{Binding Experience}"
+                        Header="Опыт"
+                        Width="*" />
+                    <DataGridTextColumn
+                        Binding="{Binding Phone}"
+                        Header="Телефон"
+                        Width="*" />
+                    <DataGridTextColumn
+                        Binding="{Binding Email}"
+                        Header="Почта"
+                        Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Border
+            Background="#C4C4C4"
+            CornerRadius="15"
+            Grid.Column="1"
+            Height="530"
+            Margin="20,40,0,0"
+            Padding="20,15">
+            <StackPanel>
+                <Border
+                    Background="#DBDADA"
+                    CornerRadius="15"
+                    Margin="0,5"
+                    Padding="15,10">
+                    <TextBox
+                        FontFamily="Inter"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Фамилия" />
+                </Border>
+                <Border
+                    Background="#DBDADA"
+                    CornerRadius="15"
+                    Margin="0,5"
+                    Padding="15,10">
+                    <TextBox
+                        FontFamily="Inter"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Имя" />
+                </Border>
+                <Border
+                    Background="#DBDADA"
+                    CornerRadius="15"
+                    Margin="0,5"
+                    Padding="15,10">
+                    <TextBox
+                        FontFamily="Inter"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Отчество" />
+                </Border>
+                <Border
+                    Background="#DBDADA"
+                    CornerRadius="15"
+                    Margin="0,5"
+                    Padding="15,10">
+                    <TextBox
+                        FontFamily="Inter"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Опыт работы" />
+                </Border>
+                <Border
+                    Background="#DBDADA"
+                    CornerRadius="15"
+                    Margin="0,5"
+                    Padding="15,10">
+                    <TextBox
+                        FontFamily="Inter"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Телефон" />
+                </Border>
+                <Border
+                    Background="#DBDADA"
+                    CornerRadius="15"
+                    Margin="0,5"
+                    Padding="15,10">
+                    <TextBox
+                        FontFamily="Inter"
+                        FontSize="16"
+                        materialDesign:HintAssist.Hint="Почта" />
+                </Border>
+                <Button
+                    Background="#5AC365"
+                    Content="Добавить новый элемент"
+                    FontFamily="Inter"
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Margin="0,10"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                <Button
+                    Background="#C3B15A"
+                    Content="Обновить выбранный элемент"
+                    FontFamily="Inter"
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Margin="0,10"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                <Button
+                    Background="#C35A5A"
+                    Content="Удалить выбранный элемент"
+                    FontFamily="Inter"
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Margin="0,10"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+            </StackPanel>
+        </Border>
+    </Grid>
 </Page>

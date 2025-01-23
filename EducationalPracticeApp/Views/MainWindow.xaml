@@ -1,6 +1,6 @@
 <Window
-    Height="650"
-    MinHeight="650"
+    Height="700"
+    MinHeight="700"
     MinWidth="1000"
     Title="HomeWindow"
     Width="1000"
@@ -98,9 +98,12 @@
                 Margin="7.5,0"
                 Width="125" />
         </StackPanel>
-        <Frame
+        <ScrollViewer
             Grid.Row="1"
+            HorizontalScrollBarVisibility="Disabled"
             Margin="20"
-            x:Name="MainFraim" />
+            VerticalScrollBarVisibility="Auto">
+            <Frame NavigationUIVisibility="Hidden" x:Name="MainFrame" />
+        </ScrollViewer>
     </Grid>
 </Window>

@@ -7,41 +7,41 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        MainFraim.Content = new MainPage();
+        MainFrame.Content = new MainPage();
     }
 
     private void MainPageClick(object sender, RoutedEventArgs e)
     {
-        MainFraim.Content = new MainPage();
+        MainFrame.Content = new MainPage();
     }
 
     private void AutoparkClick(object sender, RoutedEventArgs e)
     {
-        MainFraim.Content = new AutoparkPage();
+        MainFrame.Content = new AutoparkPage();
     }
 
     private void DriversClick(object sender, RoutedEventArgs e)
     {
-        MainFraim.Content = new DriversPage();
+        MainFrame.Content = new DriversPage();
     }
 
     private void OrdersClick(object sender, RoutedEventArgs e)
     {
-        MainFraim.Content = new OrdersPage();
+        MainFrame.Content = new OrdersPage();
     }
 
     private void VoyageClick(object sender, RoutedEventArgs e)
     {
-        MainFraim.Content = new VoyagePage();
+        MainFrame.Content = new VoyagePage();
     }
 
     private void ReportsClick(object sender, RoutedEventArgs e)
     {
-        MainFraim.Content = new ReportsPage();
+        MainFrame.Content = new ReportsPage();
     }
 
     private void ClientsClick(object sender, RoutedEventArgs e)
     {
-        MainFraim.Content = new ClientsPage();
+        MainFrame.Content = new ClientsPage();
     }
 }
