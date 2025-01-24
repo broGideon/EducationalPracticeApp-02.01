@@ -15,9 +15,6 @@
     <Page.DataContext>
         <local:OrdersViewModel />
     </Page.DataContext>
-    <Page.Resources>
-        <local:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
-    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -46,6 +43,7 @@
                         Padding="8,5">
                         <ComboBox
                             ItemsSource="{Binding Clients}"
+                            SelectedItem="{Binding SelectedClientFilter}"
                             Width="115"
                             materialDesign:HintAssist.Hint="Клиент">
                             <ComboBox.ItemTemplate>
@@ -69,15 +67,9 @@
                         <ComboBox
                             DisplayMemberPath=""
                             ItemsSource="{Binding StatusWorks}"
-                            SelectedItem="{Binding SelectedStatusWork}"
+                            SelectedItem="{Binding SelectedStatusFilter}"
                             Width="115"
-                            materialDesign:HintAssist.Hint="Статус">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                            materialDesign:HintAssist.Hint="Статус" />
                     </Border>
                 </StackPanel>
             </Grid>
@@ -89,9 +81,10 @@
                 GridLinesVisibility="All"
                 HeadersVisibility="Column"
                 IsReadOnly="True"
-                ItemsSource="{Binding Orders}"
+                ItemsSource="{Binding FilteredOrders}"
                 Margin="0,10,0,0"
                 RowBackground="White"
+                SelectedItem="{Binding SelectedOrder}"
                 VerticalScrollBarVisibility="Auto">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
@@ -147,9 +140,21 @@
                     <ComboBox
                         FontFamily="Inter"
                         FontSize="16"
+                        ItemsSource="{Binding Clients}"
+                        SelectedItem="{Binding EditableOrder.Client}"
                         materialDesign:HintAssist.Hint="Клиент">
-                        <ComboBoxItem Content="Активное" />
-                        <ComboBoxItem Content="Неактивное" />
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat=" {0} {1}">
+                                            <Binding Path="FullName" />
+                                            <Binding Path="Phone" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </Border>
                 <Border
@@ -160,6 +165,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
+                        Text="{Binding EditableOrder.Description}"
                         materialDesign:HintAssist.Hint="Описание" />
                 </Border>
                 <Border
@@ -170,6 +176,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
+                        Text="{Binding EditableOrder.Weight}"
                         materialDesign:HintAssist.Hint="Вес" />
                 </Border>
                 <Border
@@ -180,6 +187,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
+                        Text="{Binding EditableOrder.SendDate}"
                         materialDesign:HintAssist.Hint="Дата отправки" />
                 </Border>
                 <Border
@@ -190,6 +198,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
+                        Text="{Binding EditableOrder.ArriveDate}"
                         materialDesign:HintAssist.Hint="Дата прибытия" />
                 </Border>
                 <Border
@@ -200,13 +209,13 @@
                     <ComboBox
                         FontFamily="Inter"
                         FontSize="16"
-                        materialDesign:HintAssist.Hint="Статус">
-                        <ComboBoxItem Content="Активное" />
-                        <ComboBoxItem Content="Неактивное" />
-                    </ComboBox>
+                        ItemsSource="{Binding StatusWorks}"
+                        SelectedItem="{Binding EditableOrder.Status}"
+                        materialDesign:HintAssist.Hint="Статус" />
                 </Border>
                 <Button
                     Background="#5AC365"
+                    Command="{Binding AddOrderCommand}"
                     Content="Добавить новый элемент"
                     FontFamily="Inter"
                     FontSize="16"
@@ -217,6 +226,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" />
                 <Button
                     Background="#C3B15A"
+                    Command="{Binding UpdateOrderCommand}"
                     Content="Обновить выбранный элемент"
                     FontFamily="Inter"
                     FontSize="16"
@@ -227,6 +237,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" />
                 <Button
                     Background="#C35A5A"
+                    Command="{Binding DeleteOrderCommand}"
                     Content="Удалить выбранный элемент"
                     FontFamily="Inter"
                     FontSize="16"

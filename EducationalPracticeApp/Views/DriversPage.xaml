@@ -44,6 +44,7 @@
                 ItemsSource="{Binding Drivers}"
                 Margin="0,10,0,0"
                 RowBackground="White"
+                SelectedItem="{Binding SelectedDriver}"
                 VerticalScrollBarVisibility="Auto">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
@@ -98,7 +99,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedDriver.Surname}"
+                        Text="{Binding EditableDriver.Surname}"
                         materialDesign:HintAssist.Hint="Фамилия" />
                 </Border>
                 <Border
@@ -109,7 +110,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedDriver.Name}"
+                        Text="{Binding EditableDriver.Name}"
                         materialDesign:HintAssist.Hint="Имя" />
                 </Border>
                 <Border
@@ -120,7 +121,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedDriver.MiddleName}"
+                        Text="{Binding EditableDriver.MiddleName}"
                         materialDesign:HintAssist.Hint="Отчество" />
                 </Border>
                 <Border
@@ -131,7 +132,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedDriver.Experience}"
+                        Text="{Binding EditableDriver.Experience}"
                         materialDesign:HintAssist.Hint="Опыт работы" />
                 </Border>
                 <Border
@@ -142,7 +143,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedDriver.Phone}"
+                        Text="{Binding EditableDriver.Phone}"
                         materialDesign:HintAssist.Hint="Телефон" />
                 </Border>
                 <Border
@@ -153,11 +154,12 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedDriver.Email}"
+                        Text="{Binding EditableDriver.Email}"
                         materialDesign:HintAssist.Hint="Почта" />
                 </Border>
                 <Button
                     Background="#5AC365"
+                    Command="{Binding AddDriverCommand}"
                     Content="Добавить новый элемент"
                     FontFamily="Inter"
                     FontSize="16"
@@ -168,6 +170,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" />
                 <Button
                     Background="#C3B15A"
+                    Command="{Binding UpdateDriverCommand}"
                     Content="Обновить выбранный элемент"
                     FontFamily="Inter"
                     FontSize="16"
@@ -178,6 +181,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" />
                 <Button
                     Background="#C35A5A"
+                    Command="{Binding DeleteDriverCommand}"
                     Content="Удалить выбранный элемент"
                     FontFamily="Inter"
                     FontSize="16"

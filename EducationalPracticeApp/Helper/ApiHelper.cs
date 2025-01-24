@@ -8,7 +8,7 @@ namespace EducationalPracticeApp.Helper;
 
 public class ApiHelper
 {
-     private readonly string _baseUrl = "https://sbgsrnr.zapto.org/api/v2";
+     private readonly string _baseUrl = "http://localhost:5166";
 
     public async Task<T?> GetFiltered<T>(string model, string token = "")
     {
@@ -30,9 +30,10 @@ public class ApiHelper
         return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
     }
 
-    public async Task<T?> Post<T>(string json, string model, string token = "")
+    public async Task<T?> Post<T>(T entity, string model, string token = "")
     {
         var client = new HttpClient();
+        string json = JsonConvert.SerializeObject(entity);
         if (!string.IsNullOrWhiteSpace(token))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         HttpContent body = new StringContent(json, Encoding.UTF8, "application/json");
@@ -41,9 +42,10 @@ public class ApiHelper
         return default;
     }
 
-    public async Task<bool> Put(string json, string model, int id, string token = "")
+    public async Task<bool> Put<T>(T entity, string model, int id, string token = "")
     {
         var client = new HttpClient();
+        string json = JsonConvert.SerializeObject(entity);
         if (!string.IsNullOrWhiteSpace(token))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         HttpContent body = new StringContent(json, Encoding.UTF8, "application/json");

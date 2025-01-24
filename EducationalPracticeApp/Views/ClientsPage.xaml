@@ -87,7 +87,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedClient.FullName}"
+                        Text="{Binding EditableClient.FullName}"
                         materialDesign:HintAssist.Hint="Полное имя" />
                 </Border>
                 <Border
@@ -98,7 +98,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedClient.Phone}"
+                        Text="{Binding EditableClient.Phone}"
                         materialDesign:HintAssist.Hint="Телефон" />
                 </Border>
                 <Border
@@ -109,11 +109,12 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedClient.Email}"
+                        Text="{Binding EditableClient.Email}"
                         materialDesign:HintAssist.Hint="Почта" />
                 </Border>
                 <Button
                     Background="#5AC365"
+                    Command="{Binding AddClientCommand}"
                     Content="Добавить новый элемент"
                     FontFamily="Inter"
                     FontSize="16"
@@ -124,6 +125,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" />
                 <Button
                     Background="#C3B15A"
+                    Command="{Binding UpdateClientCommand}"
                     Content="Обновить выбранный элемент"
                     FontFamily="Inter"
                     FontSize="16"
@@ -134,6 +136,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}" />
                 <Button
                     Background="#C35A5A"
+                    Command="{Binding DeleteClientCommand}"
                     Content="Удалить выбранный элемент"
                     FontFamily="Inter"
                     FontSize="16"
