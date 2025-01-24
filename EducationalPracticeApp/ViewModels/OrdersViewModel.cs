@@ -15,7 +15,7 @@ public partial class OrdersViewModel: ObservableObject
     [ObservableProperty] private Order _selectedOrder = new();
     [ObservableProperty] private Order _editableOrder = new();
 
-    [ObservableProperty] private Client? _selectedClientFilter;
+    [ObservableProperty] private Client? _selectedClientFilter; 
     [ObservableProperty] private string? _selectedStatusFilter;
     private readonly ApiHelper _apiHelper;
 

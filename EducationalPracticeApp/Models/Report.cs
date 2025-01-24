@@ -6,7 +6,7 @@ public class Report
 
     public int EmployeeId { get; set; }
 
-    public int ReportType { get; set; }
+    public string ReportType { get; set; } = null!;
 
     public DateOnly ReportDate { get; set; }
 

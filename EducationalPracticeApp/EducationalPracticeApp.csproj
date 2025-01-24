@@ -27,5 +27,8 @@
         <Using Include="CommunityToolkit.Mvvm.ComponentModel"/>
         <Using Include="CommunityToolkit.Mvvm.Input"/>
     </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    </ItemGroup>
 
 </Project>
