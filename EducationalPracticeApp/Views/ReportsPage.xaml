@@ -65,7 +65,7 @@
                         Header="Тип отчета"
                         Width="*" />
                     <DataGridTextColumn
-                        Binding="{Binding ReportDate}"
+                        Binding="{Binding ReportDate, StringFormat=\{0:dd.MM.yyyy\}}"
                         Header="Дата создания"
                         Width="*" />
                     <DataGridTextColumn

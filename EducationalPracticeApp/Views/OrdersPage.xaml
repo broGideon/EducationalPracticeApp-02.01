@@ -110,11 +110,11 @@
                         Header="Вес"
                         Width="*" />
                     <DataGridTextColumn
-                        Binding="{Binding SendDate}"
+                        Binding="{Binding SendDate, StringFormat=\{0:dd.MM.yyyy\}}"
                         Header="Дата отправки"
                         Width="*" />
                     <DataGridTextColumn
-                        Binding="{Binding ArriveDate}"
+                        Binding="{Binding ArriveDate, StringFormat=\{0:dd.MM.yyyy\}}"
                         Header="Дата прибытия"
                         Width="*" />
                     <DataGridTextColumn
@@ -184,7 +184,7 @@
                     CornerRadius="15"
                     Margin="0,5"
                     Padding="15,10">
-                    <TextBox
+                    <DatePicker
                         FontFamily="Inter"
                         FontSize="16"
                         Text="{Binding EditableOrder.SendDate}"
@@ -195,7 +195,7 @@
                     CornerRadius="15"
                     Margin="0,5"
                     Padding="15,10">
-                    <TextBox
+                    <DatePicker
                         FontFamily="Inter"
                         FontSize="16"
                         Text="{Binding EditableOrder.ArriveDate}"

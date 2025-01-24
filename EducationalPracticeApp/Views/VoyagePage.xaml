@@ -134,11 +134,11 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTextColumn
-                        Binding="{Binding StartDate}"
+                        Binding="{Binding StartDate, StringFormat=\{0:dd.MM.yyyy\}}"
                         Header="Время начала"
                         Width="*" />
                     <DataGridTextColumn
-                        Binding="{Binding EndDate}"
+                        Binding="{Binding EndDate, StringFormat=\{0:dd.MM.yyyy\}}"
                         Header="Время приезда"
                         Width="*" />
                     <DataGridTextColumn
@@ -233,7 +233,7 @@
                     CornerRadius="15"
                     Margin="0,5"
                     Padding="15,10">
-                    <TextBox
+                    <DatePicker
                         FontFamily="Inter"
                         FontSize="16"
                         Text="{Binding EditableVoyage.StartDate}"
@@ -244,7 +244,7 @@
                     CornerRadius="15"
                     Margin="0,5"
                     Padding="15,10">
-                    <TextBox
+                    <DatePicker
                         FontFamily="Inter"
                         FontSize="16"
                         Text="{Binding EditableVoyage.EndDate}"
