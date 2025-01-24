@@ -70,11 +70,11 @@
                     Header="Вес"
                     Width="*" />
                 <DataGridTextColumn
-                    Binding="{Binding SendDate}"
+                    Binding="{Binding SendDate, StringFormat=\{0:dd.MM.yyyy\}}"
                     Header="Дата отправки"
                     Width="*" />
                 <DataGridTextColumn
-                    Binding="{Binding ArriveDate}"
+                    Binding="{Binding ArriveDate, StringFormat=\{0:dd.MM.yyyy\}}"
                     Header="Дата прибытия"
                     Width="*" />
                 <DataGridTextColumn
