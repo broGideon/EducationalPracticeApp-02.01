@@ -19,4 +19,19 @@ public class Order
     public string Status { get; set; }
 
     public virtual Client? Client { get; set; }
+    
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Order other)
+            return false;
+
+        return IdOrder == other.IdOrder && ClientId == other.ClientId && OrderNum == other.OrderNum &&
+               Weight == other.Weight && SendDate == other.SendDate && ArriveDate == other.ArriveDate &&
+               Status == other.Status;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(IdOrder, ClientId, OrderNum, Weight, SendDate, ArriveDate, Status);
+    }
 }

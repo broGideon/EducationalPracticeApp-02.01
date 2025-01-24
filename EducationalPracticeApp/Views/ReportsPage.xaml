@@ -1,7 +1,9 @@
 <Page
-    Height="450"
+    Height="auto"
+    HorizontalAlignment="Stretch"
     Title="ReportsPage"
-    Width="800"
+    VerticalAlignment="Stretch"
+    Width="auto"
     mc:Ignorable="d"
     x:Class="EducationalPracticeApp.Views.ReportsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
