@@ -62,15 +62,19 @@ public partial class OrdersViewModel: ObservableObject
 
     private bool CheckInputs()
     {
-        if (string.IsNullOrWhiteSpace(EditableOrder.OrderNum))
-        {
-            MessageBox.Show("Введите номер заказа");
-            return false;
-        }
-        else if (EditableOrder.Client == null)
+        if (EditableOrder.Client == null)
         {
             MessageBox.Show("Выберите клиента");
             return false;
+        }
+        else if (string.IsNullOrWhiteSpace(EditableOrder.Description))
+        {
+            MessageBox.Show("Введите описание");
+            return false;
+        }
+        else if (EditableOrder.SendDate < DateOnly.FromDateTime(DateTime.Today))
+        {
+            MessageBox.Show("Неправильная дата");
         }
         else if (EditableOrder.Weight <= 0)
         {
@@ -83,7 +87,9 @@ public partial class OrdersViewModel: ObservableObject
             return false;
         }
 
+        Random random = new();
         EditableOrder.ClientId = (int)EditableOrder.Client.IdClient!;
+        EditableOrder.OrderNum = $"{random.Next(100, 1000)}-{random.Next(100, 1000)}-{random.Next(100, 1000)}";
         return true;
     }
 
@@ -96,7 +102,6 @@ public partial class OrdersViewModel: ObservableObject
     [RelayCommand(AllowConcurrentExecutions = true)]
     private async Task AddOrder()
     {
-        EditableOrder.OrderNum = "srg"; //TODO Убрать нахуй
         if (!CheckInputs())
             return;
 

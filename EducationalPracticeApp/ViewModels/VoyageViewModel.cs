@@ -83,19 +83,14 @@ public partial class VoyageViewModel : ObservableObject
 
     private bool CheckInputs()
     {
-        if (string.IsNullOrWhiteSpace(EditableVoyage.SendPoint))
-        {
-            MessageBox.Show("Введите точку отправления");
-            return false;
-        }
-        else if (string.IsNullOrWhiteSpace(EditableVoyage.ArrivalPoint))
-        {
-            MessageBox.Show("Введите точку назначения");
-            return false;
-        }
-        else if (EditableVoyage.Transport == null)
+        if (EditableVoyage.Transport == null)
         {
             MessageBox.Show("Выберите транспорт");
+            return false;
+        }
+        else if (EditableVoyage.Order == null)
+        {
+            MessageBox.Show("Выберите заказ");
             return false;
         }
         else if (EditableVoyage.Driver == null)
@@ -103,14 +98,24 @@ public partial class VoyageViewModel : ObservableObject
             MessageBox.Show("Выберите водителя");
             return false;
         }
-        else if (EditableVoyage.Order == null)
+        else if (EditableVoyage.StartDate < DateOnly.FromDateTime(DateTime.Today))
         {
-            MessageBox.Show("Выберите водителя");
+            MessageBox.Show("Введите корректную дату");
             return false;
         }
         else if (string.IsNullOrWhiteSpace(EditableVoyage.Status))
         {
             MessageBox.Show("Укажите статус рейса");
+            return false;
+        }
+        else if (string.IsNullOrWhiteSpace(EditableVoyage.SendPoint))
+        {
+            MessageBox.Show("Введите точку отправления");
+            return false;
+        }
+        else if (string.IsNullOrWhiteSpace(EditableVoyage.ArrivalPoint))
+        {
+            MessageBox.Show("Введите точку назначения");
             return false;
         }
 

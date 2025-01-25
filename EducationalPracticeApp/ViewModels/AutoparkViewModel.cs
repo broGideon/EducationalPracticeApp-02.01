@@ -67,12 +67,7 @@ public partial class AutoparkViewModel: ObservableObject
 
     private bool CheckInputs()
     {
-        if (EditableTransport.Status == null)
-        {
-            MessageBox.Show("Выберите состояние");
-            return false;
-        }
-        else if (string.IsNullOrWhiteSpace(EditableTransport.Maker))
+        if (string.IsNullOrWhiteSpace(EditableTransport.Maker))
         {
             MessageBox.Show("Введите производителя");
             return false;
@@ -89,7 +84,12 @@ public partial class AutoparkViewModel: ObservableObject
         }
         else if (EditableTransport.MaxPayload < 1)
         {
-            MessageBox.Show("максимальная нагрузка не может быть меньше 1");
+            MessageBox.Show("Максимальная нагрузка должна быть больше нуля");
+            return false;
+        }
+        else if (EditableTransport.Status == null)
+        {
+            MessageBox.Show("Выберите состояние");
             return false;
         }
 
