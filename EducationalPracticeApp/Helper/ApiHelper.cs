@@ -15,8 +15,9 @@ public class ApiHelper
     private async Task<string> RefreshToken()
     {
         string? refreshToken = TokenHelper.LoadRefreshToken(); 
+        var token = new RefreshToken(refreshToken!);
         var client = new HttpClient();
-        HttpContent content = new StringContent(((string)refreshToken)!, Encoding.UTF8, "application/json");
+        HttpContent content = new StringContent(JsonConvert.SerializeObject(token), Encoding.UTF8, "application/json");
         var response = await client.PostAsync($"{_baseUrl}/refresh", content);
         if (!response.IsSuccessStatusCode) throw new Exception();
         AuthResponse authResponse = JsonConvert.DeserializeObject<AuthResponse>(await response.Content.ReadAsStringAsync())!;

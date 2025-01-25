@@ -31,8 +31,7 @@ public partial class VoyageViewModel : ObservableObject
 
     private async Task LoadData()
     {
-        List<Task> task = new() { LoadVoyages(), LoadClients(), LoadTransports(), LoadOrders(), LoadTransports(), LoadDrivers() };
-        await Task.WhenAll(task);
+        await Task.WhenAll(LoadVoyages(), LoadClients(), LoadTransports(), LoadOrders(), LoadTransports(), LoadDrivers());
     }
 
     private async Task LoadVoyages()

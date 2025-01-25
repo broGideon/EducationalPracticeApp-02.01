@@ -43,8 +43,7 @@ public partial class MainViewModel : ObservableObject
     
     private async Task InitializeDataAsync()
     {
-        List<Task> tasks = new List<Task> { LoadTransports(), LoadOrders()};
-        await Task.WhenAll(tasks);
+        await Task.WhenAll(LoadTransports(), LoadOrders());
     }
     
     private async Task LoadTransports()
