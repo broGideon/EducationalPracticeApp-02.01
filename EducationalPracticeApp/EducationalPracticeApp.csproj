@@ -13,6 +13,7 @@
         <PackageReference Include="MaterialDesignColors" Version="5.2.2-ci882"/>
         <PackageReference Include="MaterialDesignThemes" Version="5.2.2-ci882"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1" />
         <PackageReference Include="WPF-UI" Version="4.0.0-rc.3"/>
     </ItemGroup>
 
@@ -31,4 +32,16 @@
         <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="Properties\Settings.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+        <Compile Update="Properties\Settings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    
 </Project>
