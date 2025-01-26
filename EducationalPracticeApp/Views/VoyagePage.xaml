@@ -45,7 +45,6 @@
                         Margin="0,0,14,0"
                         Padding="8,5">
                         <ComboBox
-                            DisplayMemberPath=""
                             ItemsSource="{Binding StatusWorks}"
                             SelectedItem="{Binding SelectedStatusFilter}"
                             Width="115"

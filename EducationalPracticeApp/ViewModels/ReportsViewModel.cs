@@ -21,6 +21,7 @@ public partial class ReportsViewModel: ObservableObject
     public ReportsViewModel()
     {
         _apiHelper = new ApiHelper();
+        _ = LoadReports();
     }
 
     private async Task LoadReports()
@@ -64,6 +65,7 @@ public partial class ReportsViewModel: ObservableObject
         switch (value)
         {
             case "Загруженность автопарка":
+                _ = GenerateTransportReport();
                 break;
             case "Статистика выполненных заказов за месяц":
                 _ = GenerateOrdersReport();
@@ -82,7 +84,8 @@ public partial class ReportsViewModel: ObservableObject
 
         string path = GetPath();
         DirectoryIfExists(path);
-        using var pdfWriter = new PdfWriter(path + "OrdersReport.pdf");
+        string fileName = "Статистика заказов-" + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + ".pdf";
+        using var pdfWriter = new PdfWriter(path + fileName);
         using var pdfDocument = new PdfDocument(pdfWriter);
         var document = new Document(pdfDocument);
 
@@ -100,7 +103,7 @@ public partial class ReportsViewModel: ObservableObject
         {
             table.AddCell(order.SendDate.ToString("dd.MM.yyyy"));
             table.AddCell(order.ArriveDate?.ToString("dd.MM.yyyy") ?? "Не завершен");
-            table.AddCell(order.Client.FullName);
+            table.AddCell(order.Client!.FullName);
             table.AddCell(order.Weight.ToString());
             table.AddCell(order.Description);
         }
@@ -120,6 +123,7 @@ public partial class ReportsViewModel: ObservableObject
 
         string path = GetPath();
         DirectoryIfExists(path);
+        string fileName = "Загруженность автопарка-" + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + ".pdf";
         using var pdfWriter = new PdfWriter(path + "TransportReport.pdf");
         using var pdfDocument = new PdfDocument(pdfWriter);
         var document = new Document(pdfDocument);
@@ -127,7 +131,7 @@ public partial class ReportsViewModel: ObservableObject
         document.Add(new Paragraph("Загруженность автопарка").SetBold().SetFontSize(18));
         document.Add(new Paragraph($"Дата создания отчета: {DateTime.Now:dd.MM.yyyy}").SetFontSize(12));
 
-        foreach (var group in voyages.GroupBy(v => v.Transport.StNumber))
+        foreach (var group in voyages.GroupBy(v => v.Transport!.StNumber))
         {
             document.Add(new Paragraph($"Транспорт: {group.Key}").SetBold());
 
@@ -142,7 +146,7 @@ public partial class ReportsViewModel: ObservableObject
                 table.AddCell(voyage.IdVoyage.ToString());
                 table.AddCell(voyage.StartDate.ToString("dd.MM.yyyy"));
                 table.AddCell(voyage.EndDate?.ToString("dd.MM.yyyy") ?? "Не завершён");
-                table.AddCell(voyage.Transport.MaxPayload.ToString());
+                table.AddCell(voyage.Transport!.MaxPayload.ToString());
             }
             
             var totalHours = group.Sum(v => 
