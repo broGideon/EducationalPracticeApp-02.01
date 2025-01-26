@@ -11,7 +11,7 @@ public partial class AutoparkViewModel: ObservableObject
     [ObservableProperty] private ObservableCollection<Status> _statuses = new();
     [ObservableProperty] private ObservableCollection<Transport> _transports = new();
     [ObservableProperty] private ObservableCollection<Transport> _filteredTransports = new();
-    [ObservableProperty] private Transport _selectedTransport = new();
+    [ObservableProperty] private Transport? _selectedTransport = new();
     [ObservableProperty] private Transport _editableTransport = new();
     [ObservableProperty] private Status? _selectedStatus;
     private readonly ApiHelper _apiHelper;
@@ -101,6 +101,7 @@ public partial class AutoparkViewModel: ObservableObject
     {
         FilterTransport();
         EditableTransport = new();
+        SelectedTransport = null;
     }
 
     [RelayCommand(AllowConcurrentExecutions = true)]

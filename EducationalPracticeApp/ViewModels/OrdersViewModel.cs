@@ -12,7 +12,7 @@ public partial class OrdersViewModel: ObservableObject
     [ObservableProperty] private ObservableCollection<Client> _clients = new();
     [ObservableProperty] private ObservableCollection<Order> _filteredOrders = new();
 
-    [ObservableProperty] private Order _selectedOrder = new();
+    [ObservableProperty] private Order? _selectedOrder = new();
     [ObservableProperty] private Order _editableOrder = new();
 
     [ObservableProperty] private Client? _selectedClientFilter; 
@@ -96,6 +96,7 @@ public partial class OrdersViewModel: ObservableObject
     private void ClearInputs()
     {
         EditableOrder = new();
+        SelectedOrder = null;
         ApplyFilters();
     }
 

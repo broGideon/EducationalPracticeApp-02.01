@@ -9,7 +9,7 @@ namespace EducationalPracticeApp.ViewModels;
 public partial class ClientsViewModel: ObservableObject
 {
     [ObservableProperty] private ObservableCollection<Client> _clients = new();
-    [ObservableProperty] private Client _selectedClient = new();
+    [ObservableProperty] private Client? _selectedClient = new();
     [ObservableProperty] private Client _editableClient = new();
 
     private readonly ApiHelper _apiHelper;
@@ -76,6 +76,7 @@ public partial class ClientsViewModel: ObservableObject
     private void ClearInputs()
     {
         EditableClient = new();
+        SelectedClient = null;
     }
 
     [RelayCommand(AllowConcurrentExecutions = true)]

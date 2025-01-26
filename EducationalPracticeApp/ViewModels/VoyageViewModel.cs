@@ -15,7 +15,7 @@ public partial class VoyageViewModel : ObservableObject
     [ObservableProperty] private ObservableCollection<Transport> _transports = new();
     [ObservableProperty] private ObservableCollection<Voyage> _filteredVoyages = new();
 
-    [ObservableProperty] private Voyage _selectedVoyage = new();
+    [ObservableProperty] private Voyage? _selectedVoyage = new();
     [ObservableProperty] private Voyage _editableVoyage = new();
 
     [ObservableProperty] private Client? _selectedClientFilter;
@@ -128,6 +128,7 @@ public partial class VoyageViewModel : ObservableObject
     private void ClearInputs()
     {
         EditableVoyage = new();
+        SelectedVoyage = null;
         ApplyFilters();
     }
 

@@ -9,7 +9,7 @@ namespace EducationalPracticeApp.ViewModels;
 public partial class DriversViewModel: ObservableObject
 {
     [ObservableProperty] private ObservableCollection<Driver> _drivers = new();
-    [ObservableProperty] private Driver _selectedDriver = new();
+    [ObservableProperty] private Driver? _selectedDriver = new();
     [ObservableProperty] private Driver _editableDriver = new();
 
     private readonly ApiHelper _apiHelper;
@@ -89,6 +89,7 @@ public partial class DriversViewModel: ObservableObject
     private void ClearInputs()
     {
         EditableDriver = new();
+        SelectedDriver = null;
     }
 
     [RelayCommand(AllowConcurrentExecutions = true)]
