@@ -1,18 +1,16 @@
-using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using EducationalPracticeApp.Helper;
-using EducationalPracticeApp.Models;
 
 namespace EducationalPracticeApp.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty] private bool _isAutoparkActive = true;
+    [ObservableProperty] private bool _isClientActive = true;
     [ObservableProperty] private bool _isDriverActive = true;
     [ObservableProperty] private bool _isOrderActive = true;
-    [ObservableProperty] private bool _isVoyageActive = true;
     [ObservableProperty] private bool _isReportActive = true;
-    [ObservableProperty] private bool _isClientActive = true;
+    [ObservableProperty] private bool _isVoyageActive = true;
 
     public MainViewModel()
     {

@@ -1,22 +1,24 @@
+using EducationalPracticeApp.Properties;
+
 namespace EducationalPracticeApp.Helper;
 
 public class TokenHelper
 {
     public static void SaveRefreshToken(string refreshToken)
     {
-        string encryptedToken = TokenEncryptor.Encrypt(refreshToken);
-        Properties.Settings.Default.RefreshToken = encryptedToken;
-        Properties.Settings.Default.Save();
+        var encryptedToken = TokenEncryptor.Encrypt(refreshToken);
+        Settings.Default.RefreshToken = encryptedToken;
+        Settings.Default.Save();
     }
-     
+
     public static string? LoadRefreshToken()
     {
-        if (string.IsNullOrEmpty(Properties.Settings.Default.RefreshToken))
+        if (string.IsNullOrEmpty(Settings.Default.RefreshToken))
             return null;
 
         try
         {
-            return TokenEncryptor.Decrypt(Properties.Settings.Default.RefreshToken);
+            return TokenEncryptor.Decrypt(Settings.Default.RefreshToken);
         }
         catch
         {

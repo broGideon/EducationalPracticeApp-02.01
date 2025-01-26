@@ -6,7 +6,6 @@ using System.Windows;
 using EducationalPracticeApp.Helper;
 using EducationalPracticeApp.Models;
 using iText.IO.Font;
-using iText.IO.Font.Constants;
 using iText.Kernel.Font;
 using iText.Kernel.Pdf;
 using iText.Layout;
@@ -14,27 +13,28 @@ using iText.Layout.Element;
 
 namespace EducationalPracticeApp.ViewModels;
 
-public partial class ReportsViewModel: ObservableObject
+public partial class ReportsViewModel : ObservableObject
 {
+    private readonly ApiHelper _apiHelper;
+    [ObservableProperty] private string _message = "{тип отчета}, от {дата генерации}";
     [ObservableProperty] private ObservableCollection<Report> _reports = new();
     [ObservableProperty] private Report? _selectedReport = new();
-    [ObservableProperty] private string _message = "{тип отчета}, от {дата генерации}";
-    public string[] ReportTypes { get; } = ["Статистика выполненных заказов за месяц", "Загруженность автопарка"];
     [ObservableProperty] private string? _selectedReportType;
-    private readonly ApiHelper _apiHelper;
 
     public ReportsViewModel()
     {
         _apiHelper = new ApiHelper();
         _ = LoadReports();
     }
-    
+
+    public string[] ReportTypes { get; } = ["Статистика выполненных заказов за месяц", "Загруженность автопарка"];
+
     private async Task LoadReports()
     {
         List<Report>? reports = await _apiHelper.Get<List<Report>>("report");
         Reports = new ObservableCollection<Report>(reports ?? new List<Report>());
     }
-    
+
     [RelayCommand]
     private void PrintReport()
     {
@@ -48,10 +48,11 @@ public partial class ReportsViewModel: ObservableObject
     {
         if (SelectedReport == null)
         {
-            MessageBox.Show("Выберите отчёт");   
+            MessageBox.Show("Выберите отчёт");
             return;
         }
-        string pathFilePdf = GetPath() + "\\" + SelectedReport.ReportContent + ".pdf";
+
+        var pathFilePdf = GetPath() + "\\" + SelectedReport.ReportContent + ".pdf";
         if (File.Exists(pathFilePdf))
             Process.Start(new ProcessStartInfo(pathFilePdf) { UseShellExecute = true });
         else
@@ -63,20 +64,19 @@ public partial class ReportsViewModel: ObservableObject
     {
         if (SelectedReport == null)
         {
-            MessageBox.Show("Выберите отчёт");   
+            MessageBox.Show("Выберите отчёт");
             return;
         }
+
         var isDelete = await _apiHelper.Delete("report", (int)SelectedReport.IdReport!);
         if (!isDelete)
         {
             MessageBox.Show("Произошла ошибка");
             return;
         }
-        string path = GetPath() + "\\" + SelectedReport.ReportContent + ".pdf";
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
+
+        var path = GetPath() + "\\" + SelectedReport.ReportContent + ".pdf";
+        if (File.Exists(path)) File.Delete(path);
         MessageBox.Show("Отчет удален");
         Reports.Remove(SelectedReport);
         SelectedReport = null;
@@ -101,7 +101,7 @@ public partial class ReportsViewModel: ObservableObject
                 break;
         }
     }
-    
+
     private async Task GenerateOrdersReport()
     {
         List<Order>? orders = await _apiHelper.Get<List<Order>>("order/report");
@@ -111,9 +111,9 @@ public partial class ReportsViewModel: ObservableObject
             return;
         }
 
-        string path = GetPath();
+        var path = GetPath();
         DirectoryIfExists(path);
-        string fileName = "Статистика заказов-" + DateTime.Now.ToString("dd.MM.yyyy HH-mm-ss");
+        var fileName = "Статистика заказов-" + DateTime.Now.ToString("dd.MM.yyyy HH-mm-ss");
 
         try
         {
@@ -121,7 +121,7 @@ public partial class ReportsViewModel: ObservableObject
             var pdfWriter = new PdfWriter(path + "\\" + fileName + ".pdf");
             var pdfDocument = new PdfDocument(pdfWriter);
             var document = new Document(pdfDocument);
-            
+
             var font = PdfFontFactory.CreateFont("C:/Windows/Fonts/arial.ttf", PdfEncodings.IDENTITY_H);
             document.SetFont(font);
             document.Add(new Paragraph("Статистика выполненных заказов за месяц").SetBold().SetFontSize(18));
@@ -147,13 +147,15 @@ public partial class ReportsViewModel: ObservableObject
 
             document.Add(table);
             document.Close();
-            Report report = new Report("Статистика выполненных заказов за месяц", DateOnly.FromDateTime(DateTime.Today), fileName);
-            var response =  await _apiHelper.Post<Report>(report, "report");
+            var report = new Report("Статистика выполненных заказов за месяц", DateOnly.FromDateTime(DateTime.Today),
+                fileName);
+            var response = await _apiHelper.Post<Report>(report, "report");
             if (response == null)
             {
                 MessageBox.Show("Ошибка формирования отчёта");
                 return;
             }
+
             Reports.Add(response);
             MessageBox.Show("Отчет успешно сформирован");
             SelectedReport = null;
@@ -164,7 +166,7 @@ public partial class ReportsViewModel: ObservableObject
             MessageBox.Show("Ошибка формирования отчёта");
         }
     }
-    
+
     private async Task GenerateTransportReport()
     {
         List<Voyage>? voyages = await _apiHelper.Get<List<Voyage>>("voyage/report");
@@ -174,9 +176,9 @@ public partial class ReportsViewModel: ObservableObject
             return;
         }
 
-        string path = GetPath();
+        var path = GetPath();
         DirectoryIfExists(path);
-        string fileName = "Загруженность автопарка-" + DateTime.Now.ToString("dd.MM.yyyy HH-mm-ss");
+        var fileName = "Загруженность автопарка-" + DateTime.Now.ToString("dd.MM.yyyy HH-mm-ss");
         try
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -206,8 +208,8 @@ public partial class ReportsViewModel: ObservableObject
                     table.AddCell(voyage.EndDate?.ToString("dd.MM.yyyy") ?? "Не завершён");
                     table.AddCell(voyage.Transport!.MaxPayload.ToString());
                 }
-                
-                var totalHours = group.Sum(v => 
+
+                var totalHours = group.Sum(v =>
                 {
                     var endDate = v.EndDate?.ToDateTime(new TimeOnly(0, 0)) ?? DateTime.Now;
                     var startDate = v.StartDate.ToDateTime(new TimeOnly(0, 0));
@@ -219,13 +221,14 @@ public partial class ReportsViewModel: ObservableObject
             }
 
             document.Close();
-            Report report = new Report("Загруженность автопарка", DateOnly.FromDateTime(DateTime.Today), fileName);
-            var response =  await _apiHelper.Post<Report>(report, "report");
+            var report = new Report("Загруженность автопарка", DateOnly.FromDateTime(DateTime.Today), fileName);
+            var response = await _apiHelper.Post<Report>(report, "report");
             if (response == null)
             {
                 MessageBox.Show("Ошибка формирования отчёта");
                 return;
             }
+
             Reports.Add(response);
             MessageBox.Show("Отчет успешно сформирован");
             SelectedReport = null;
@@ -242,6 +245,9 @@ public partial class ReportsViewModel: ObservableObject
     {
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
     }
-    
-    private string GetPath() => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)+ @"\Downloads\Reports";
+
+    private string GetPath()
+    {
+        return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads\Reports";
+    }
 }

@@ -5,27 +5,28 @@ using EducationalPracticeApp.Models;
 
 namespace EducationalPracticeApp.ViewModels;
 
-public partial class OrdersViewModel: ObservableObject
+public partial class OrdersViewModel : ObservableObject
 {
-    public string[] StatusWorks { get; } = ["В работе", "Выполнено"];
-    [ObservableProperty] private ObservableCollection<Order> _orders = new();
+    private readonly ApiHelper _apiHelper;
+    [ObservableProperty] private DateTime? _arriveDate;
     [ObservableProperty] private ObservableCollection<Client> _clients = new();
+    [ObservableProperty] private Order _editableOrder = new();
     [ObservableProperty] private ObservableCollection<Order> _filteredOrders = new();
+    [ObservableProperty] private ObservableCollection<Order> _orders = new();
+
+    [ObservableProperty] private Client? _selectedClientFilter;
 
     [ObservableProperty] private Order? _selectedOrder = new();
-    [ObservableProperty] private Order _editableOrder = new();
-    [ObservableProperty] private DateTime? _sendDate = null;
-    [ObservableProperty] private DateTime? _arriveDate = null;
-
-    [ObservableProperty] private Client? _selectedClientFilter; 
     [ObservableProperty] private string? _selectedStatusFilter;
-    private readonly ApiHelper _apiHelper;
+    [ObservableProperty] private DateTime? _sendDate;
 
     public OrdersViewModel()
     {
         _apiHelper = new ApiHelper();
         _ = LoadData();
     }
+
+    public string[] StatusWorks { get; } = ["В работе", "Выполнено"];
 
     private async Task LoadData()
     {
@@ -68,12 +69,14 @@ public partial class OrdersViewModel: ObservableObject
             MessageBox.Show("Выберите клиента");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableOrder.Description))
+
+        if (string.IsNullOrWhiteSpace(EditableOrder.Description))
         {
             MessageBox.Show("Введите описание");
             return false;
         }
-        else if (SendDate == null)
+
+        if (SendDate == null)
         {
             MessageBox.Show("Неправильная дата");
         }
@@ -98,7 +101,7 @@ public partial class OrdersViewModel: ObservableObject
 
     private void ClearInputs()
     {
-        EditableOrder = new();
+        EditableOrder = new Order();
         SelectedOrder = null;
         SendDate = null;
         ArriveDate = null;
@@ -178,15 +181,9 @@ public partial class OrdersViewModel: ObservableObject
     {
         var filtered = Orders.AsEnumerable();
 
-        if (SelectedClientFilter != null)
-        {
-            filtered = filtered.Where(o => o.ClientId == SelectedClientFilter.IdClient);
-        }
+        if (SelectedClientFilter != null) filtered = filtered.Where(o => o.ClientId == SelectedClientFilter.IdClient);
 
-        if (SelectedStatusFilter != null)
-        {
-            filtered = filtered.Where(o => o.Status == SelectedStatusFilter);
-        }
+        if (SelectedStatusFilter != null) filtered = filtered.Where(o => o.Status == SelectedStatusFilter);
 
         FilteredOrders = new ObservableCollection<Order>(filtered);
     }

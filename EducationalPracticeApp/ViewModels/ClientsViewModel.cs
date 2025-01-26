@@ -6,13 +6,12 @@ using EducationalPracticeApp.Models;
 
 namespace EducationalPracticeApp.ViewModels;
 
-public partial class ClientsViewModel: ObservableObject
+public partial class ClientsViewModel : ObservableObject
 {
-    [ObservableProperty] private ObservableCollection<Client> _clients = new();
-    [ObservableProperty] private Client? _selectedClient = new();
-    [ObservableProperty] private Client _editableClient = new();
-
     private readonly ApiHelper _apiHelper;
+    [ObservableProperty] private ObservableCollection<Client> _clients = new();
+    [ObservableProperty] private Client _editableClient = new();
+    [ObservableProperty] private Client? _selectedClient = new();
 
     public ClientsViewModel()
     {
@@ -45,32 +44,37 @@ public partial class ClientsViewModel: ObservableObject
             MessageBox.Show("Введите полное имя клиента");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableClient.Phone))
+
+        if (string.IsNullOrWhiteSpace(EditableClient.Phone))
         {
             MessageBox.Show("Введите номер телефона клиента");
             return false;
         }
-        else if (!Regex.IsMatch(EditableClient.Phone, @"^\d \(\d{3}\) \d{3}-\d{4}$"))
+
+        if (!Regex.IsMatch(EditableClient.Phone, @"^\d \(\d{3}\) \d{3}-\d{4}$"))
         {
             MessageBox.Show("Некоректный формат номера телефона");
             return false;
-        } 
-        else if (string.IsNullOrWhiteSpace(EditableClient.Email))
+        }
+
+        if (string.IsNullOrWhiteSpace(EditableClient.Email))
         {
             MessageBox.Show("Введите email клиента");
             return false;
         }
-        else if (!Regex.IsMatch(EditableClient.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+
+        if (!Regex.IsMatch(EditableClient.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
         {
             MessageBox.Show("Некоректный формат почты");
             return false;
         }
+
         return true;
     }
 
     private void ClearInputs()
     {
-        EditableClient = new();
+        EditableClient = new Client();
         SelectedClient = null;
     }
 
@@ -115,7 +119,7 @@ public partial class ClientsViewModel: ObservableObject
         existingClient.Phone = EditableClient.Phone;
         existingClient.Email = EditableClient.Email;
 
-        int index = Clients.IndexOf(existingClient);
+        var index = Clients.IndexOf(existingClient);
         Clients.RemoveAt(index);
         Clients.Insert(index, existingClient);
 

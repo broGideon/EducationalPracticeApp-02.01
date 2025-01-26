@@ -10,12 +10,12 @@
 
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
-        <PackageReference Include="itext7" Version="8.0.4" />
-        <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.4" />
+        <PackageReference Include="itext7" Version="8.0.4"/>
+        <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.4"/>
         <PackageReference Include="MaterialDesignColors" Version="5.2.2-ci882"/>
         <PackageReference Include="MaterialDesignThemes" Version="5.2.2-ci882"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1"/>
         <PackageReference Include="WPF-UI" Version="4.0.0-rc.3"/>
     </ItemGroup>
 
@@ -31,7 +31,7 @@
         <Using Include="CommunityToolkit.Mvvm.Input"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+        <PackageReference Include="System.Drawing.Common" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -45,5 +45,5 @@
             <DependentUpon>Settings.settings</DependentUpon>
         </Compile>
     </ItemGroup>
-    
+
 </Project>

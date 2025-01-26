@@ -14,7 +14,7 @@ public class Client
     {
         if (obj is not Client other)
             return false;
-        
+
         return IdClient == other.IdClient && FullName == other.FullName && Phone == other.Phone;
     }
 

@@ -1,20 +1,19 @@
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 using EducationalPracticeApp.Helper;
 using EducationalPracticeApp.Models;
 
 namespace EducationalPracticeApp.ViewModels;
 
-public partial class AutoparkViewModel: ObservableObject
+public partial class AutoparkViewModel : ObservableObject
 {
+    private readonly ApiHelper _apiHelper;
+    [ObservableProperty] private Transport _editableTransport = new();
+    [ObservableProperty] private ObservableCollection<Transport> _filteredTransports = new();
+    [ObservableProperty] private Status? _selectedStatus;
+    [ObservableProperty] private Transport? _selectedTransport = new();
     [ObservableProperty] private ObservableCollection<Status> _statuses = new();
     [ObservableProperty] private ObservableCollection<Transport> _transports = new();
-    [ObservableProperty] private ObservableCollection<Transport> _filteredTransports = new();
-    [ObservableProperty] private Transport? _selectedTransport = new();
-    [ObservableProperty] private Transport _editableTransport = new();
-    [ObservableProperty] private Status? _selectedStatus;
-    private readonly ApiHelper _apiHelper;
 
     public AutoparkViewModel()
     {
@@ -26,7 +25,7 @@ public partial class AutoparkViewModel: ObservableObject
     {
         await Task.WhenAll(LoadTransports(), LoadStatuses());
     }
-    
+
     private async Task LoadTransports()
     {
         var transports = await _apiHelper.Get<List<Transport>>("transport");
@@ -48,7 +47,7 @@ public partial class AutoparkViewModel: ObservableObject
         else
             FilteredTransports = new ObservableCollection<Transport>(Transports);
     }
-    
+
     partial void OnSelectedTransportChanged(Transport? value)
     {
         if (value == null) return;
@@ -71,22 +70,26 @@ public partial class AutoparkViewModel: ObservableObject
             MessageBox.Show("Введите производителя");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableTransport.Model))
+
+        if (string.IsNullOrWhiteSpace(EditableTransport.Model))
         {
             MessageBox.Show("Введите модель");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableTransport.StNumber))
+
+        if (string.IsNullOrWhiteSpace(EditableTransport.StNumber))
         {
             MessageBox.Show("Введите госномер");
             return false;
         }
-        else if (EditableTransport.MaxPayload < 1)
+
+        if (EditableTransport.MaxPayload < 1)
         {
             MessageBox.Show("Максимальная нагрузка должна быть больше нуля");
             return false;
         }
-        else if (EditableTransport.Status == null)
+
+        if (EditableTransport.Status == null)
         {
             MessageBox.Show("Выберите состояние");
             return false;
@@ -99,7 +102,7 @@ public partial class AutoparkViewModel: ObservableObject
     private void ClearInputs()
     {
         FilterTransport();
-        EditableTransport = new();
+        EditableTransport = new Transport();
         SelectedTransport = null;
     }
 
@@ -120,7 +123,7 @@ public partial class AutoparkViewModel: ObservableObject
         Transports.Add(transport);
         ClearInputs();
     }
-    
+
     [RelayCommand(AllowConcurrentExecutions = true)]
     private async Task UpdateTransport()
     {
@@ -132,12 +135,15 @@ public partial class AutoparkViewModel: ObservableObject
             MessageBox.Show("Транспорт не выбран");
             return;
         }
-        var isUpdate = await _apiHelper.Put<Transport>(EditableTransport, "transport", (int)EditableTransport.IdTransport);
+
+        var isUpdate =
+            await _apiHelper.Put<Transport>(EditableTransport, "transport", (int)EditableTransport.IdTransport);
         if (!isUpdate)
         {
             MessageBox.Show("Произошла ошибка");
             return;
         }
+
         var existingTransport = Transports.First(t => t.IdTransport == EditableTransport.IdTransport);
         existingTransport.Status = EditableTransport.Status;
         existingTransport.Maker = EditableTransport.Maker;

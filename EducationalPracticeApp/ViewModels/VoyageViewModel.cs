@@ -7,22 +7,21 @@ namespace EducationalPracticeApp.ViewModels;
 
 public partial class VoyageViewModel : ObservableObject
 {
-    public string[] StatusWorks { get; } = ["В работе", "Выполнено"];
-    [ObservableProperty] private ObservableCollection<Voyage> _voyages = new();
+    private readonly ApiHelper _apiHelper;
     [ObservableProperty] private ObservableCollection<Client> _clients = new();
     [ObservableProperty] private ObservableCollection<Driver> _drivers = new();
-    [ObservableProperty] private ObservableCollection<Order> _orders = new();
-    [ObservableProperty] private ObservableCollection<Transport> _transports = new();
-    [ObservableProperty] private ObservableCollection<Voyage> _filteredVoyages = new();
-    [ObservableProperty] private DateTime? _startDate = null;
-    [ObservableProperty] private DateTime? _endDate = null;
-
-    [ObservableProperty] private Voyage? _selectedVoyage = new();
     [ObservableProperty] private Voyage _editableVoyage = new();
+    [ObservableProperty] private DateTime? _endDate;
+    [ObservableProperty] private ObservableCollection<Voyage> _filteredVoyages = new();
+    [ObservableProperty] private ObservableCollection<Order> _orders = new();
 
     [ObservableProperty] private Client? _selectedClientFilter;
     [ObservableProperty] private string? _selectedStatusFilter;
-    private readonly ApiHelper _apiHelper;
+
+    [ObservableProperty] private Voyage? _selectedVoyage = new();
+    [ObservableProperty] private DateTime? _startDate;
+    [ObservableProperty] private ObservableCollection<Transport> _transports = new();
+    [ObservableProperty] private ObservableCollection<Voyage> _voyages = new();
 
     public VoyageViewModel()
     {
@@ -30,9 +29,12 @@ public partial class VoyageViewModel : ObservableObject
         _ = LoadData();
     }
 
+    public string[] StatusWorks { get; } = ["В работе", "Выполнено"];
+
     private async Task LoadData()
     {
-        await Task.WhenAll(LoadVoyages(), LoadClients(), LoadTransports(), LoadOrders(), LoadTransports(), LoadDrivers());
+        await Task.WhenAll(LoadVoyages(), LoadClients(), LoadTransports(), LoadOrders(), LoadTransports(),
+            LoadDrivers());
     }
 
     private async Task LoadVoyages()
@@ -90,32 +92,38 @@ public partial class VoyageViewModel : ObservableObject
             MessageBox.Show("Выберите транспорт");
             return false;
         }
-        else if (EditableVoyage.Order == null)
+
+        if (EditableVoyage.Order == null)
         {
             MessageBox.Show("Выберите заказ");
             return false;
         }
-        else if (EditableVoyage.Driver == null)
+
+        if (EditableVoyage.Driver == null)
         {
             MessageBox.Show("Выберите водителя");
             return false;
         }
-        else if (StartDate == null)
+
+        if (StartDate == null)
         {
             MessageBox.Show("Введите корректную дату");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableVoyage.Status))
+
+        if (string.IsNullOrWhiteSpace(EditableVoyage.Status))
         {
             MessageBox.Show("Укажите статус рейса");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableVoyage.SendPoint))
+
+        if (string.IsNullOrWhiteSpace(EditableVoyage.SendPoint))
         {
             MessageBox.Show("Введите точку отправления");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableVoyage.ArrivalPoint))
+
+        if (string.IsNullOrWhiteSpace(EditableVoyage.ArrivalPoint))
         {
             MessageBox.Show("Введите точку назначения");
             return false;
@@ -125,15 +133,15 @@ public partial class VoyageViewModel : ObservableObject
         EditableVoyage.OrderId = (int)EditableVoyage.Order.IdOrder!;
         EditableVoyage.TransportId = (int)EditableVoyage.Transport.IdTransport!;
         EditableVoyage.StartDate = DateOnly.FromDateTime((DateTime)StartDate);
-        EditableVoyage.EndDate = EndDate != null ? DateOnly.FromDateTime((DateTime)EndDate) : null; 
+        EditableVoyage.EndDate = EndDate != null ? DateOnly.FromDateTime((DateTime)EndDate) : null;
         return true;
     }
 
     private void ClearInputs()
     {
-        EditableVoyage = new();
+        EditableVoyage = new Voyage();
         SelectedVoyage = null;
-        StartDate = null;   
+        StartDate = null;
         EndDate = null;
         ApplyFilters();
     }
@@ -217,14 +225,9 @@ public partial class VoyageViewModel : ObservableObject
         var filtered = Voyages.AsEnumerable();
 
         if (SelectedClientFilter != null)
-        {
             filtered = filtered.Where(v => v.Order?.ClientId == SelectedClientFilter.IdClient);
-        }
 
-        if (SelectedStatusFilter != null)
-        {
-            filtered = filtered.Where(v => v.Status == SelectedStatusFilter);
-        }
+        if (SelectedStatusFilter != null) filtered = filtered.Where(v => v.Status == SelectedStatusFilter);
 
         FilteredVoyages = new ObservableCollection<Voyage>(filtered);
     }

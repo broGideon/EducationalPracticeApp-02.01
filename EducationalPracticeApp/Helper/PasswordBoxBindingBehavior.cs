@@ -33,9 +33,6 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
 
     private void OnPasswordChanged(object sender, RoutedEventArgs e)
     {
-        if (AssociatedObject.Password != Password)
-        {
-            Password = AssociatedObject.Password;
-        }
+        if (AssociatedObject.Password != Password) Password = AssociatedObject.Password;
     }
 }

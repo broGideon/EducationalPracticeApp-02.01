@@ -6,20 +6,19 @@ using EducationalPracticeApp.Models;
 
 namespace EducationalPracticeApp.ViewModels;
 
-public partial class DriversViewModel: ObservableObject
+public partial class DriversViewModel : ObservableObject
 {
-    [ObservableProperty] private ObservableCollection<Driver> _drivers = new();
-    [ObservableProperty] private Driver? _selectedDriver = new();
-    [ObservableProperty] private Driver _editableDriver = new();
-
     private readonly ApiHelper _apiHelper;
+    [ObservableProperty] private ObservableCollection<Driver> _drivers = new();
+    [ObservableProperty] private Driver _editableDriver = new();
+    [ObservableProperty] private Driver? _selectedDriver = new();
 
     public DriversViewModel()
     {
         _apiHelper = new ApiHelper();
         _ = LoadDrivers();
     }
-    
+
     private async Task LoadDrivers()
     {
         var drivers = await _apiHelper.Get<List<Driver>>("driver");
@@ -48,42 +47,49 @@ public partial class DriversViewModel: ObservableObject
             MessageBox.Show("Введите фамилию водителя");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableDriver.Name))
+
+        if (string.IsNullOrWhiteSpace(EditableDriver.Name))
         {
             MessageBox.Show("Введите имя водителя");
             return false;
         }
-        else if (EditableDriver.Experience < 0)
+
+        if (EditableDriver.Experience < 0)
         {
             MessageBox.Show("Стаж водителя не может быть отрицательным");
             return false;
         }
-        else if (string.IsNullOrWhiteSpace(EditableDriver.Phone))
+
+        if (string.IsNullOrWhiteSpace(EditableDriver.Phone))
         {
             MessageBox.Show("Введите номер телефона водителя");
             return false;
         }
-        else if (!Regex.IsMatch(EditableDriver.Phone, @"^\d \(\d{3}\) \d{3}-\d{4}$"))
+
+        if (!Regex.IsMatch(EditableDriver.Phone, @"^\d \(\d{3}\) \d{3}-\d{4}$"))
         {
             MessageBox.Show("Некоректный формат номера телефона");
             return false;
-        } 
-        else if (string.IsNullOrWhiteSpace(EditableDriver.Email))
+        }
+
+        if (string.IsNullOrWhiteSpace(EditableDriver.Email))
         {
             MessageBox.Show("Введите email водителя");
             return false;
         }
-        else if (!Regex.IsMatch(EditableDriver.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+
+        if (!Regex.IsMatch(EditableDriver.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
         {
             MessageBox.Show("Некоректный формат почты");
             return false;
         }
+
         return true;
     }
 
     private void ClearInputs()
     {
-        EditableDriver = new();
+        EditableDriver = new Driver();
         SelectedDriver = null;
     }
 
@@ -131,7 +137,7 @@ public partial class DriversViewModel: ObservableObject
         existingDriver.Phone = EditableDriver.Phone;
         existingDriver.Email = EditableDriver.Email;
 
-        int index = Drivers.IndexOf(existingDriver);
+        var index = Drivers.IndexOf(existingDriver);
         Drivers.RemoveAt(index);
         Drivers.Insert(index, existingDriver);
 
