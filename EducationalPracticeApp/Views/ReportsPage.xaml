@@ -144,12 +144,10 @@
                     <ComboBox
                         FontFamily="Inter"
                         FontSize="16"
+                        ItemsSource="{Binding ReportTypes}"
                         SelectedItem="{Binding SelectedReportType}"
                         materialDesign:HintAssist.Hint="Сгенерировать новый отчет">
-                        <ComboBox.Items>
-                            <ComboBoxItem Content="Статистика выполненных заказов за месяц" />
-                            <ComboBoxItem Content="Загруженность автопарка" />
-                        </ComboBox.Items>
+                        
                     </ComboBox>
                 </Border>
                 <Button

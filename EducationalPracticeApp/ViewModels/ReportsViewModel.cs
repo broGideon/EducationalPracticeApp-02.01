@@ -1,9 +1,13 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Windows;
 using EducationalPracticeApp.Helper;
 using EducationalPracticeApp.Models;
+using iText.IO.Font;
+using iText.IO.Font.Constants;
+using iText.Kernel.Font;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
@@ -15,6 +19,7 @@ public partial class ReportsViewModel: ObservableObject
     [ObservableProperty] private ObservableCollection<Report> _reports = new();
     [ObservableProperty] private Report _selectedReport = new();
     [ObservableProperty] private string _message = "{тип отчета}, {дата генерации}";
+    public string[] ReportTypes { get; } = ["Статистика выполненных заказов за месяц", "Загруженность автопарка"];
     [ObservableProperty] private string? _selectedReportType;
     private readonly ApiHelper _apiHelper;
 
@@ -84,32 +89,55 @@ public partial class ReportsViewModel: ObservableObject
 
         string path = GetPath();
         DirectoryIfExists(path);
-        string fileName = "Статистика заказов-" + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + ".pdf";
-        using var pdfWriter = new PdfWriter(path + fileName);
-        using var pdfDocument = new PdfDocument(pdfWriter);
-        var document = new Document(pdfDocument);
+        string fileName = "Статистика заказов-" + DateTime.Now.ToString("dd.MM.yyyy HH-mm-ss");
 
-        document.Add(new Paragraph("Статистика выполненных заказов за месяц").SetBold().SetFontSize(18));
-        document.Add(new Paragraph($"Дата создания отчета: {DateTime.Now:dd.MM.yyyy}").SetFontSize(12));
-
-        var table = new Table(5);
-        table.AddHeaderCell("Дата отправки");
-        table.AddHeaderCell("Дата завершения");
-        table.AddHeaderCell("Имя клиента");
-        table.AddHeaderCell("Вес заказа");
-        table.AddHeaderCell("Описание");
-
-        foreach (var order in orders.Where(o => o.Status == "Выполнено"))
+        try
         {
-            table.AddCell(order.SendDate.ToString("dd.MM.yyyy"));
-            table.AddCell(order.ArriveDate?.ToString("dd.MM.yyyy") ?? "Не завершен");
-            table.AddCell(order.Client!.FullName);
-            table.AddCell(order.Weight.ToString());
-            table.AddCell(order.Description);
-        }
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            var pdfWriter = new PdfWriter(path + "\\" + fileName + ".pdf");
+            var pdfDocument = new PdfDocument(pdfWriter);
+            var document = new Document(pdfDocument);
+            
+            var font = PdfFontFactory.CreateFont("C:/Windows/Fonts/arial.ttf", PdfEncodings.IDENTITY_H);
+            document.SetFont(font);
+            document.Add(new Paragraph("Статистика выполненных заказов за месяц").SetBold().SetFontSize(18));
+            document.Add(new Paragraph($"Дата создания отчета: {DateTime.Now:dd.MM.yyyy}").SetFontSize(12));
 
-        document.Add(table);
-        document.Close();
+            var table = new Table(6);
+            table.AddHeaderCell("Дата отправки");
+            table.AddHeaderCell("Дата завершения");
+            table.AddHeaderCell("Имя клиента");
+            table.AddHeaderCell("Вес заказа");
+            table.AddHeaderCell("Описание");
+            table.AddHeaderCell("Статус");
+
+            foreach (var order in orders)
+            {
+                table.AddCell(order.SendDate.ToString("dd.MM.yyyy"));
+                table.AddCell(order.ArriveDate?.ToString("dd.MM.yyyy") ?? "Не завершен");
+                table.AddCell(order.Client!.FullName);
+                table.AddCell(order.Weight.ToString());
+                table.AddCell(order.Description);
+                table.AddCell(order.Status);
+            }
+
+            document.Add(table);
+            document.Close();
+            Report report = new Report("Статистика выполненных заказов за месяц", DateOnly.FromDateTime(DateTime.Today), fileName);
+            var response =  await _apiHelper.Post<Report>(report, "report");
+            if (response == null)
+            {
+                MessageBox.Show("Ошибка формирования отчёта");
+                return;
+            }
+            Reports.Add(response);
+            MessageBox.Show("Отчет успешно сформирован");
+            SelectedReportType = null;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Ошибка формирования отчёта");
+        }
     }
     
     private async Task GenerateTransportReport()
@@ -123,51 +151,71 @@ public partial class ReportsViewModel: ObservableObject
 
         string path = GetPath();
         DirectoryIfExists(path);
-        string fileName = "Загруженность автопарка-" + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + ".pdf";
-        using var pdfWriter = new PdfWriter(path + "TransportReport.pdf");
-        using var pdfDocument = new PdfDocument(pdfWriter);
-        var document = new Document(pdfDocument);
-
-        document.Add(new Paragraph("Загруженность автопарка").SetBold().SetFontSize(18));
-        document.Add(new Paragraph($"Дата создания отчета: {DateTime.Now:dd.MM.yyyy}").SetFontSize(12));
-
-        foreach (var group in voyages.GroupBy(v => v.Transport!.StNumber))
+        string fileName = "Загруженность автопарка-" + DateTime.Now.ToString("dd.MM.yyyy HH-mm-ss");
+        try
         {
-            document.Add(new Paragraph($"Транспорт: {group.Key}").SetBold());
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            var pdfWriter = new PdfWriter(path + "\\" + fileName + ".pdf");
+            var pdfDocument = new PdfDocument(pdfWriter);
+            var document = new Document(pdfDocument);
 
-            var table = new Table(4);
-            table.AddHeaderCell("Рейс");
-            table.AddHeaderCell("Дата начала");
-            table.AddHeaderCell("Дата окончания");
-            table.AddHeaderCell("Грузоподъемность");
+            var font = PdfFontFactory.CreateFont("C:/Windows/Fonts/arial.ttf", PdfEncodings.IDENTITY_H);
+            document.SetFont(font);
+            document.Add(new Paragraph("Загруженность автопарка").SetBold().SetFontSize(18));
+            document.Add(new Paragraph($"Дата создания отчета: {DateTime.Now:dd.MM.yyyy}").SetFontSize(12));
 
-            foreach (var voyage in group)
+            foreach (var group in voyages.GroupBy(v => v.Transport!.StNumber))
             {
-                table.AddCell(voyage.IdVoyage.ToString());
-                table.AddCell(voyage.StartDate.ToString("dd.MM.yyyy"));
-                table.AddCell(voyage.EndDate?.ToString("dd.MM.yyyy") ?? "Не завершён");
-                table.AddCell(voyage.Transport!.MaxPayload.ToString());
+                document.Add(new Paragraph($"Транспорт: {group.Key}").SetBold());
+
+                var table = new Table(4);
+                table.AddHeaderCell("Рейс");
+                table.AddHeaderCell("Дата начала");
+                table.AddHeaderCell("Дата окончания");
+                table.AddHeaderCell("Грузоподъемность");
+
+                foreach (var voyage in group)
+                {
+                    table.AddCell(voyage.IdVoyage.ToString());
+                    table.AddCell(voyage.StartDate.ToString("dd.MM.yyyy"));
+                    table.AddCell(voyage.EndDate?.ToString("dd.MM.yyyy") ?? "Не завершён");
+                    table.AddCell(voyage.Transport!.MaxPayload.ToString());
+                }
+                
+                var totalHours = group.Sum(v => 
+                {
+                    var endDate = v.EndDate?.ToDateTime(new TimeOnly(0, 0)) ?? DateTime.Now;
+                    var startDate = v.StartDate.ToDateTime(new TimeOnly(0, 0));
+
+                    return (endDate - startDate).TotalHours;
+                });
+                document.Add(table);
+                document.Add(new Paragraph($"Общее время работы: {totalHours:F2} часов"));
             }
-            
-            var totalHours = group.Sum(v => 
+
+            document.Close();
+            Report report = new Report("Загруженность автопарка", DateOnly.FromDateTime(DateTime.Today), fileName);
+            var response =  await _apiHelper.Post<Report>(report, "report");
+            if (response == null)
             {
-                var endDate = v.EndDate?.ToDateTime(new TimeOnly(0, 0)) ?? DateTime.Now;
-                var startDate = v.StartDate.ToDateTime(new TimeOnly(0, 0));
-
-                return (endDate - startDate).TotalHours;
-            });
-            document.Add(table);
-            document.Add(new Paragraph($"Общее время работы: {totalHours:F2} часов"));
+                MessageBox.Show("Ошибка формирования отчёта");
+                return;
+            }
+            Reports.Add(response);
+            MessageBox.Show("Отчет успешно сформирован");
+            SelectedReportType = null;
         }
-
-        document.Close();
+        catch (Exception er)
+        {
+            MessageBox.Show("Ошибка формирования отчёта");
+        }
     }
 
 
     private void DirectoryIfExists(string path)
     {
-        if (Directory.Exists(path)) Directory.CreateDirectory(path);
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
     }
     
-    private string GetPath() => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)+ @"\Downloads\AutoLogistics\";
+    private string GetPath() => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)+ @"\Downloads\Reports";
 }
