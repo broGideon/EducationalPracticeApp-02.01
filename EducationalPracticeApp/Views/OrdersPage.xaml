@@ -187,7 +187,7 @@
                     <DatePicker
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SendDate}"
+                        SelectedDate="{Binding SendDate}"
                         materialDesign:HintAssist.Hint="Дата отправки" />
                 </Border>
                 <Border
@@ -198,7 +198,7 @@
                     <DatePicker
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding ArriveDate}"
+                        SelectedDate="{Binding ArriveDate}"
                         materialDesign:HintAssist.Hint="Дата прибытия" />
                 </Border>
                 <Border

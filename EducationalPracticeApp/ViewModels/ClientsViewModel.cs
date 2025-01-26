@@ -55,7 +55,7 @@ public partial class ClientsViewModel: ObservableObject
             MessageBox.Show("Введите номер телефона клиента");
             return false;
         }
-        else if (Regex.IsMatch(EditableClient.Phone, @"^\d \(\d{3}\) \d{3}-\d{4}$"))
+        else if (!Regex.IsMatch(EditableClient.Phone, @"^\d \(\d{3}\) \d{3}-\d{4}$"))
         {
             MessageBox.Show("Некоректный формат номера телефона");
             return false;
@@ -65,7 +65,7 @@ public partial class ClientsViewModel: ObservableObject
             MessageBox.Show("Введите email клиента");
             return false;
         }
-        else if (Regex.IsMatch(EditableClient.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+        else if (!Regex.IsMatch(EditableClient.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
         {
             MessageBox.Show("Некоректный формат почты");
             return false;

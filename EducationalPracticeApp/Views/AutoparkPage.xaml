@@ -164,7 +164,7 @@
                     <TextBox
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding SelectedTransport.MaxPayload}"
+                        Text="{Binding EditableTransport.MaxPayload}"
                         materialDesign:HintAssist.Hint="Макс. нагрузка" />
                 </Border>
                 <Button

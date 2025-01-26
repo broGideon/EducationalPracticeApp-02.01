@@ -17,7 +17,7 @@ namespace EducationalPracticeApp.ViewModels;
 public partial class ReportsViewModel: ObservableObject
 {
     [ObservableProperty] private ObservableCollection<Report> _reports = new();
-    [ObservableProperty] private Report _selectedReport = new();
+    [ObservableProperty] private Report? _selectedReport = new();
     [ObservableProperty] private string _message = "{тип отчета}, от {дата генерации}";
     public string[] ReportTypes { get; } = ["Статистика выполненных заказов за месяц", "Загруженность автопарка"];
     [ObservableProperty] private string? _selectedReportType;
@@ -46,7 +46,7 @@ public partial class ReportsViewModel: ObservableObject
     [RelayCommand]
     private void OpenReport()
     {
-        if (SelectedReport.IdReport == null)
+        if (SelectedReport == null)
         {
             MessageBox.Show("Выберите отчёт");   
             return;
@@ -58,9 +58,33 @@ public partial class ReportsViewModel: ObservableObject
             MessageBox.Show("Выбранного файла не существует");
     }
 
+    [RelayCommand(AllowConcurrentExecutions = true)]
+    private async Task DeleteReport()
+    {
+        if (SelectedReport == null)
+        {
+            MessageBox.Show("Выберите отчёт");   
+            return;
+        }
+        var isDelete = await _apiHelper.Delete("report", (int)SelectedReport.IdReport!);
+        if (!isDelete)
+        {
+            MessageBox.Show("Произошла ошибка");
+            return;
+        }
+        string path = GetPath() + "\\" + SelectedReport.ReportContent + ".pdf";
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+        MessageBox.Show("Отчет удален");
+        Reports.Remove(SelectedReport);
+        SelectedReport = null;
+    }
+
     partial void OnSelectedReportChanged(Report? value)
     {
-        Message = $"{value?.ReportType}, от {value?.ReportDate}";
+        Message = $"{value?.ReportType ?? "{тип отчета}"}, от {value?.ReportDate.ToString() ?? "{дата генерации}"}";
     }
 
     partial void OnSelectedReportTypeChanged(string? value)
@@ -132,6 +156,7 @@ public partial class ReportsViewModel: ObservableObject
             }
             Reports.Add(response);
             MessageBox.Show("Отчет успешно сформирован");
+            SelectedReport = null;
             SelectedReportType = null;
         }
         catch (Exception ex)
@@ -203,6 +228,7 @@ public partial class ReportsViewModel: ObservableObject
             }
             Reports.Add(response);
             MessageBox.Show("Отчет успешно сформирован");
+            SelectedReport = null;
             SelectedReportType = null;
         }
         catch (Exception er)

@@ -68,7 +68,7 @@ public partial class DriversViewModel: ObservableObject
             MessageBox.Show("Введите номер телефона водителя");
             return false;
         }
-        else if (Regex.IsMatch(EditableDriver.Phone, @"^\d \(\d{3}\) \d{3}-\d{4}$"))
+        else if (!Regex.IsMatch(EditableDriver.Phone, @"^\d \(\d{3}\) \d{3}-\d{4}$"))
         {
             MessageBox.Show("Некоректный формат номера телефона");
             return false;
@@ -78,7 +78,7 @@ public partial class DriversViewModel: ObservableObject
             MessageBox.Show("Введите email водителя");
             return false;
         }
-        else if (Regex.IsMatch(EditableDriver.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+        else if (!Regex.IsMatch(EditableDriver.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
         {
             MessageBox.Show("Некоректный формат почты");
             return false;
