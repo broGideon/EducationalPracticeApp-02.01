@@ -30,7 +30,7 @@
                     FontSize="14"
                     FontWeight="Normal"
                     Margin="0,0,0,10"
-                    Text="Водители"
+                    Text="Отчеты"
                     VerticalAlignment="Center" />
             </Grid>
             <DataGrid
@@ -56,10 +56,6 @@
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding EmployeeId}"
-                        Header="Сотрудник"
-                        Width="*" />
                     <DataGridTextColumn
                         Binding="{Binding ReportType}"
                         Header="Тип отчета"
@@ -101,6 +97,7 @@
                             FontSize="16"
                             FontWeight="Normal"
                             Text="{Binding Message}"
+                            TextWrapping="Wrap"
                             TextAlignment="Center" />
                     </StackPanel>
                 </Border>

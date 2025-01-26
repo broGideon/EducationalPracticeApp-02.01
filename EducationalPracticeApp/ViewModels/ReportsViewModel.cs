@@ -18,7 +18,7 @@ public partial class ReportsViewModel: ObservableObject
 {
     [ObservableProperty] private ObservableCollection<Report> _reports = new();
     [ObservableProperty] private Report _selectedReport = new();
-    [ObservableProperty] private string _message = "{тип отчета}, {дата генерации}";
+    [ObservableProperty] private string _message = "{тип отчета}, от {дата генерации}";
     public string[] ReportTypes { get; } = ["Статистика выполненных заказов за месяц", "Загруженность автопарка"];
     [ObservableProperty] private string? _selectedReportType;
     private readonly ApiHelper _apiHelper;
@@ -51,7 +51,7 @@ public partial class ReportsViewModel: ObservableObject
             MessageBox.Show("Выберите отчёт");   
             return;
         }
-        string pathFilePdf = GetPath() + SelectedReport.ReportContent + ".pdf";
+        string pathFilePdf = GetPath() + "\\" + SelectedReport.ReportContent + ".pdf";
         if (File.Exists(pathFilePdf))
             Process.Start(new ProcessStartInfo(pathFilePdf) { UseShellExecute = true });
         else
@@ -60,7 +60,7 @@ public partial class ReportsViewModel: ObservableObject
 
     partial void OnSelectedReportChanged(Report? value)
     {
-        Message = $"{value?.ReportType}, {value?.ReportDate}";
+        Message = $"{value?.ReportType}, от {value?.ReportDate}";
     }
 
     partial void OnSelectedReportTypeChanged(string? value)
