@@ -14,6 +14,8 @@ public partial class OrdersViewModel: ObservableObject
 
     [ObservableProperty] private Order? _selectedOrder = new();
     [ObservableProperty] private Order _editableOrder = new();
+    [ObservableProperty] private DateTime? _sendDate = null;
+    [ObservableProperty] private DateTime? _arriveDate = null;
 
     [ObservableProperty] private Client? _selectedClientFilter; 
     [ObservableProperty] private string? _selectedStatusFilter;
@@ -23,7 +25,6 @@ public partial class OrdersViewModel: ObservableObject
     {
         _apiHelper = new ApiHelper();
         _ = LoadData();
-        OnSelectedOrderChanged(SelectedOrder);
     }
 
     private async Task LoadData()
@@ -45,8 +46,9 @@ public partial class OrdersViewModel: ObservableObject
         Clients = new ObservableCollection<Client>(clients ?? new List<Client>());
     }
 
-    partial void OnSelectedOrderChanged(Order value)
+    partial void OnSelectedOrderChanged(Order? value)
     {
+        if (value == null) return;
         EditableOrder = new Order
         {
             IdOrder = value?.IdOrder,
@@ -54,10 +56,10 @@ public partial class OrdersViewModel: ObservableObject
             OrderNum = value?.OrderNum,
             Description = value?.Description,
             Weight = value?.Weight ?? 0,
-            SendDate = value?.SendDate ?? DateOnly.FromDateTime(DateTime.Today),
-            ArriveDate = value?.ArriveDate,
             Status = value?.Status
         };
+        SendDate = value?.SendDate.ToDateTime(TimeOnly.MinValue);
+        ArriveDate = value?.ArriveDate == null ? null : value.ArriveDate.Value.ToDateTime(TimeOnly.MinValue);
     }
 
     private bool CheckInputs()
@@ -72,7 +74,7 @@ public partial class OrdersViewModel: ObservableObject
             MessageBox.Show("Введите описание");
             return false;
         }
-        else if (EditableOrder.SendDate < DateOnly.FromDateTime(DateTime.Today))
+        else if (SendDate == null)
         {
             MessageBox.Show("Неправильная дата");
         }
@@ -90,6 +92,8 @@ public partial class OrdersViewModel: ObservableObject
         Random random = new();
         EditableOrder.ClientId = (int)EditableOrder.Client.IdClient!;
         EditableOrder.OrderNum = $"{random.Next(100, 1000)}-{random.Next(100, 1000)}-{random.Next(100, 1000)}";
+        EditableOrder.SendDate = DateOnly.FromDateTime((DateTime)SendDate!);
+        EditableOrder.ArriveDate = ArriveDate == null ? null : DateOnly.FromDateTime((DateTime)ArriveDate);
         return true;
     }
 
@@ -97,6 +101,8 @@ public partial class OrdersViewModel: ObservableObject
     {
         EditableOrder = new();
         SelectedOrder = null;
+        SendDate = null;
+        ArriveDate = null;
         ApplyFilters();
     }
 
@@ -121,7 +127,6 @@ public partial class OrdersViewModel: ObservableObject
     [RelayCommand(AllowConcurrentExecutions = true)]
     private async Task UpdateOrder()
     {
-        EditableOrder.OrderNum = "srg"; //TODO Убрать нахуй
         if (!CheckInputs())
             return;
 

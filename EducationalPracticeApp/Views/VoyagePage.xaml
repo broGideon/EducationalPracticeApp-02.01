@@ -235,7 +235,7 @@
                     <DatePicker
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding EditableVoyage.StartDate}"
+                        SelectedDate="{Binding StartDate}"
                         materialDesign:HintAssist.Hint="Время начала" />
                 </Border>
                 <Border
@@ -246,7 +246,7 @@
                     <DatePicker
                         FontFamily="Inter"
                         FontSize="16"
-                        Text="{Binding EditableVoyage.EndDate}"
+                        SelectedDate="{Binding EndDate}"
                         materialDesign:HintAssist.Hint="Время приезда" />
                 </Border>
                 <Border

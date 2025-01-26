@@ -14,6 +14,8 @@ public partial class VoyageViewModel : ObservableObject
     [ObservableProperty] private ObservableCollection<Order> _orders = new();
     [ObservableProperty] private ObservableCollection<Transport> _transports = new();
     [ObservableProperty] private ObservableCollection<Voyage> _filteredVoyages = new();
+    [ObservableProperty] private DateTime? _startDate = null;
+    [ObservableProperty] private DateTime? _endDate = null;
 
     [ObservableProperty] private Voyage? _selectedVoyage = new();
     [ObservableProperty] private Voyage _editableVoyage = new();
@@ -26,7 +28,6 @@ public partial class VoyageViewModel : ObservableObject
     {
         _apiHelper = new ApiHelper();
         _ = LoadData();
-        OnSelectedVoyageChanged(SelectedVoyage);
     }
 
     private async Task LoadData()
@@ -65,20 +66,21 @@ public partial class VoyageViewModel : ObservableObject
         Transports = new ObservableCollection<Transport>(transports ?? new List<Transport>());
     }
 
-    partial void OnSelectedVoyageChanged(Voyage value)
+    partial void OnSelectedVoyageChanged(Voyage? value)
     {
+        if (value == null) return;
         EditableVoyage = new Voyage
         {
             IdVoyage = value?.IdVoyage,
             Driver = value.Driver,
             Order = value.Order,
             Transport = value.Transport,
-            StartDate = value?.StartDate ?? DateOnly.FromDateTime(DateTime.Today),
-            EndDate = value?.EndDate,
             SendPoint = value?.SendPoint,
             ArrivalPoint = value?.ArrivalPoint,
             Status = value?.Status
         };
+        StartDate = value.StartDate.ToDateTime(TimeOnly.MinValue);
+        EndDate = value.EndDate == null ? null : value.EndDate.Value.ToDateTime(TimeOnly.MinValue);
     }
 
     private bool CheckInputs()
@@ -98,7 +100,7 @@ public partial class VoyageViewModel : ObservableObject
             MessageBox.Show("Выберите водителя");
             return false;
         }
-        else if (EditableVoyage.StartDate < DateOnly.FromDateTime(DateTime.Today))
+        else if (StartDate == null)
         {
             MessageBox.Show("Введите корректную дату");
             return false;
@@ -122,6 +124,8 @@ public partial class VoyageViewModel : ObservableObject
         EditableVoyage.DriverId = (int)EditableVoyage.Driver.IdDriver!;
         EditableVoyage.OrderId = (int)EditableVoyage.Order.IdOrder!;
         EditableVoyage.TransportId = (int)EditableVoyage.Transport.IdTransport!;
+        EditableVoyage.StartDate = DateOnly.FromDateTime((DateTime)StartDate);
+        EditableVoyage.EndDate = EndDate != null ? DateOnly.FromDateTime((DateTime)EndDate) : null; 
         return true;
     }
 
@@ -129,6 +133,8 @@ public partial class VoyageViewModel : ObservableObject
     {
         EditableVoyage = new();
         SelectedVoyage = null;
+        StartDate = null;   
+        EndDate = null;
         ApplyFilters();
     }
 

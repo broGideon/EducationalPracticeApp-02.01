@@ -18,7 +18,6 @@ public partial class DriversViewModel: ObservableObject
     {
         _apiHelper = new ApiHelper();
         _ = LoadData();
-        OnSelectedDriverChanged(SelectedDriver);
     }
 
     private async Task LoadData()
@@ -32,8 +31,9 @@ public partial class DriversViewModel: ObservableObject
         Drivers = new ObservableCollection<Driver>(drivers ?? new List<Driver>());
     }
 
-    partial void OnSelectedDriverChanged(Driver value)
+    partial void OnSelectedDriverChanged(Driver? value)
     {
+        if (value == null) return;
         EditableDriver = new Driver
         {
             IdDriver = value?.IdDriver,

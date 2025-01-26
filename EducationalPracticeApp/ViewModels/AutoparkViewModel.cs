@@ -51,8 +51,9 @@ public partial class AutoparkViewModel: ObservableObject
             FilteredTransports = new ObservableCollection<Transport>(Transports);
     }
     
-    partial void OnSelectedTransportChanged(Transport value)
+    partial void OnSelectedTransportChanged(Transport? value)
     {
+        if (value == null) return;
         EditableTransport = new Transport
         {
             IdTransport = value.IdTransport,

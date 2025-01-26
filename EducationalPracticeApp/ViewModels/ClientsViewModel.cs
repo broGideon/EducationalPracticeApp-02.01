@@ -18,7 +18,6 @@ public partial class ClientsViewModel: ObservableObject
     {
         _apiHelper = new ApiHelper();
         _ = LoadData();
-        OnSelectedClientChanged(SelectedClient);
     }
 
     private async Task LoadData()
@@ -32,8 +31,9 @@ public partial class ClientsViewModel: ObservableObject
         Clients = new ObservableCollection<Client>(clients ?? new List<Client>());
     }
 
-    partial void OnSelectedClientChanged(Client value)
+    partial void OnSelectedClientChanged(Client? value)
     {
+        if (value == null) return;
         EditableClient = new Client
         {
             IdClient = value?.IdClient,
