@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace EducationalPracticeApp.Views;
 
-public partial class MainPage : Page
+public partial class HomePage : Page
 {
-    public MainPage()
+    public HomePage()
     {
         InitializeComponent();
     }

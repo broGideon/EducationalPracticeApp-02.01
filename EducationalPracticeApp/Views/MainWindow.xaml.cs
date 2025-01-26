@@ -7,12 +7,12 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        MainFrame.Content = new MainPage();
+        MainFrame.Content = new HomePage();
     }
 
     private void MainPageClick(object sender, RoutedEventArgs e)
     {
-        MainFrame.Content = new MainPage();
+        MainFrame.Content = new HomePage();
     }
 
     private void AutoparkClick(object sender, RoutedEventArgs e)

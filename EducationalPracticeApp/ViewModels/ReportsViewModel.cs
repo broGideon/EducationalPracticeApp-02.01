@@ -28,7 +28,7 @@ public partial class ReportsViewModel: ObservableObject
         _apiHelper = new ApiHelper();
         _ = LoadReports();
     }
-
+    
     private async Task LoadReports()
     {
         List<Report>? reports = await _apiHelper.Get<List<Report>>("report");

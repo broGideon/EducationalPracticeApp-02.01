@@ -5,7 +5,7 @@
     VerticalAlignment="Stretch"
     Width="auto"
     mc:Ignorable="d"
-    x:Class="EducationalPracticeApp.Views.MainPage"
+    x:Class="EducationalPracticeApp.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EducationalPracticeApp.ViewModels"
@@ -13,7 +13,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Page.DataContext>
-        <local:MainViewModel />
+        <local:HomeViewModel />
     </Page.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>

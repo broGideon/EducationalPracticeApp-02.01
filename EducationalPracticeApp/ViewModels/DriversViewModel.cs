@@ -17,14 +17,9 @@ public partial class DriversViewModel: ObservableObject
     public DriversViewModel()
     {
         _apiHelper = new ApiHelper();
-        _ = LoadData();
+        _ = LoadDrivers();
     }
-
-    private async Task LoadData()
-    {
-        await LoadDrivers();
-    }
-
+    
     private async Task LoadDrivers()
     {
         var drivers = await _apiHelper.Get<List<Driver>>("driver");

@@ -29,8 +29,7 @@ public partial class OrdersViewModel: ObservableObject
 
     private async Task LoadData()
     {
-        await LoadOrders();
-        await LoadClients();
+        await Task.WhenAll(LoadOrders(), LoadClients());
     }
 
     private async Task LoadOrders()

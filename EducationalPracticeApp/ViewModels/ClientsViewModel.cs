@@ -17,12 +17,7 @@ public partial class ClientsViewModel: ObservableObject
     public ClientsViewModel()
     {
         _apiHelper = new ApiHelper();
-        _ = LoadData();
-    }
-
-    private async Task LoadData()
-    {
-        await LoadClients();
+        _ = LoadClients();
     }
 
     private async Task LoadClients()

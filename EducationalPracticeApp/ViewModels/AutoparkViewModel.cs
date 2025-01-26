@@ -20,13 +20,11 @@ public partial class AutoparkViewModel: ObservableObject
     {
         _apiHelper = new ApiHelper();
         _ = LoadData();
-        OnSelectedTransportChanged(SelectedTransport);
     }
 
     private async Task LoadData()
     {
-        await LoadTransports();
-        await LoadStatuses();
+        await Task.WhenAll(LoadTransports(), LoadStatuses());
     }
     
     private async Task LoadTransports()

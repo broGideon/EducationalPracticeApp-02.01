@@ -7,20 +7,15 @@ namespace EducationalPracticeApp.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-    [ObservableProperty] private ObservableCollection<Transport> _transports = new();
-    [ObservableProperty] private ObservableCollection<Order> _orders = new();
     [ObservableProperty] private bool _isAutoparkActive = true;
     [ObservableProperty] private bool _isDriverActive = true;
     [ObservableProperty] private bool _isOrderActive = true;
     [ObservableProperty] private bool _isVoyageActive = true;
     [ObservableProperty] private bool _isReportActive = true;
     [ObservableProperty] private bool _isClientActive = true;
-    private readonly ApiHelper _apiHelper; 
 
     public MainViewModel()
     {
-        _apiHelper = new ApiHelper();
-        _ = InitializeDataAsync();
         var handler = new JwtSecurityTokenHandler();
         var jwtToken = handler.ReadJwtToken(TokenHelper.LoadRefreshToken());
         var role = jwtToken.Claims.FirstOrDefault(t => t.Type == "role")?.Value;
@@ -39,22 +34,5 @@ public partial class MainViewModel : ObservableObject
                 IsClientActive = false;
                 break;
         }
-    }
-    
-    private async Task InitializeDataAsync()
-    {
-        await Task.WhenAll(LoadTransports(), LoadOrders());
-    }
-    
-    private async Task LoadTransports()
-    {
-        List<Transport>? transports = await _apiHelper.Get<List<Transport>>("transport");
-        Transports = new ObservableCollection<Transport>(transports ?? new List<Transport>());
-    }
-    
-    private async Task LoadOrders()
-    {
-        List<Order>? order = await _apiHelper.Get<List<Order>>("order");
-        Orders = new ObservableCollection<Order>(order ?? new List<Order>());
     }
 }
