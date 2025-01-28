@@ -101,8 +101,8 @@ public partial class OrdersViewModel : ObservableObject
 
     private void ClearInputs()
     {
-        EditableOrder = new Order();
         SelectedOrder = null;
+        EditableOrder = new Order();
         SendDate = null;
         ArriveDate = null;
         ApplyFilters();
@@ -154,6 +154,9 @@ public partial class OrdersViewModel : ObservableObject
         existingOrder.ArriveDate = EditableOrder.ArriveDate;
         existingOrder.Status = EditableOrder.Status;
         existingOrder.Client = EditableOrder.Client;
+        var index = Orders.IndexOf(existingOrder);
+        Orders.RemoveAt(index);
+        Orders.Insert(index, existingOrder);
         ClearInputs();
     }
 

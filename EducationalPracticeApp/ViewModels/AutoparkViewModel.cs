@@ -103,7 +103,6 @@ public partial class AutoparkViewModel : ObservableObject
     {
         FilterTransport();
         EditableTransport = new Transport();
-        SelectedTransport = null;
     }
 
     [RelayCommand(AllowConcurrentExecutions = true)]
@@ -151,6 +150,10 @@ public partial class AutoparkViewModel : ObservableObject
         existingTransport.StNumber = EditableTransport.StNumber;
         existingTransport.MaxPayload = EditableTransport.MaxPayload;
         existingTransport.StatusId = EditableTransport.StatusId;
+        
+        var index = Transports.IndexOf(existingTransport);
+        Transports.RemoveAt(index);
+        Transports.Insert(index, existingTransport);
         ClearInputs();
     }
 

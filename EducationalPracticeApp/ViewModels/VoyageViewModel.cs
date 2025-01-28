@@ -197,6 +197,9 @@ public partial class VoyageViewModel : ObservableObject
         existingVoyage.SendPoint = EditableVoyage.SendPoint;
         existingVoyage.ArrivalPoint = EditableVoyage.ArrivalPoint;
         existingVoyage.Status = EditableVoyage.Status;
+        var index = Voyages.IndexOf(existingVoyage);
+        Voyages.RemoveAt(index);
+        Voyages.Insert(index, existingVoyage);
         ClearInputs();
     }
 
